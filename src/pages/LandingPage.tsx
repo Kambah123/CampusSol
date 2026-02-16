@@ -6,9 +6,11 @@ import {
   ShieldCheck,
   Zap,
   Target,
+  Trophy,
   Users,
   ArrowRight,
   MapPin,
+  Lock,
   Smartphone,
   ExternalLink
 } from 'lucide-react';
