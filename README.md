@@ -11,12 +11,13 @@
 
 ## 🚀 Features
 
-### 5 Gamified Quests (~5-10 minutes)
+### 6 Gamified Quests (~5-10 minutes)
 1. **Connect Wallet** - Link Phantom or Solflare wallet
-2. **Send Transaction** - Send 0.0001 SOL with on-chain verification
-3. **Swap to USDC** - Use Jupiter aggregator to get stablecoins
-4. **Solana Pay Demo** - Generate QR codes for instant payments
-5. **Knowledge Quiz** - 10 Nigeria-focused questions on stablecoins & remittances
+2. **Secure Your Identity** - Audit wallet health with Webacy DD.xyz
+3. **Send Transaction** - Send 0.0001 SOL with Webacy protection
+4. **Swap to USDC** - Use Jupiter aggregator to get stablecoins
+5. **Solana Pay Demo** - Generate QR codes with risk-audited recipients
+6. **Knowledge Quiz** - 10 Nigeria-focused questions on stablecoins & remittances
 
 ### Rewards & Badges
 - 💰 Earn 0.001-0.02 SOL/USDC per quest
@@ -30,6 +31,7 @@
 - **Frontend**: React + Vite + TypeScript
 - **Styling**: Tailwind CSS + shadcn/ui
 - **Telegram SDK**: @tma.js/sdk
+- **Security**: @webacy-xyz/sdk (DD.xyz API)
 - **Solana**: @solana/web3.js + Wallet Adapter
 - **Wallets**: Phantom, Solflare
 - **NFTs**: Metaplex Bubblegum (compressed NFTs)
@@ -67,6 +69,7 @@ VITE_ADMIN_PRIVATE_KEY=your_admin_wallet_private_key_here
 VITE_VERIFICATION_ADDRESS=your_verification_wallet_address_here
 VITE_USDC_MINT=4zMMC9srt5Ri5X14GAgXhaHii3GnPAEERYPJgZJDncDU
 VITE_BOT_NAME=CampusSolNaijaBot
+VITE_WEBACY_API_KEY=your_webacy_api_key_here
 ```
 
 ### 3. Run Locally
@@ -132,6 +135,7 @@ Add these in your Vercel project settings:
 - `VITE_RPC_ENDPOINT`
 - `VITE_ADMIN_PRIVATE_KEY` (keep secure!)
 - `VITE_VERIFICATION_ADDRESS`
+- `VITE_WEBACY_API_KEY`
 
 ## 🎯 Quest Flow
 
@@ -140,13 +144,15 @@ Welcome Screen
     ↓
 Quest 1: Connect Wallet → Detect publicKey → Reward: 0.001 SOL
     ↓
-Quest 2: Send 0.0001 SOL → Verify tx on-chain → Reward: 0.002 SOL
+Quest 2: Secure Identity → Webacy Risk Scan → Reward: 0.001 SOL
     ↓
-Quest 3: Swap SOL→USDC via Jupiter → Verify → Reward: 0.003 SOL
+Quest 3: Send 0.0001 SOL → Webacy Protection → Reward: 0.002 SOL
     ↓
-Quest 4: Generate Solana Pay QR → Demo payment → Reward: 0.004 SOL
+Quest 4: Swap SOL→USDC via Jupiter → Verify → Reward: 0.003 SOL
     ↓
-Quest 5: Quiz (10 questions) → Score ≥ 5 → Reward: 0.01 SOL
+Quest 5: Solana Pay QR → Risk-Audited Recipient → Reward: 0.004 SOL
+    ↓
+Quest 6: Quiz (10 questions) → Score ≥ 5 → Reward: 0.01 SOL
     ↓
 Completion: Mint NFT Badge + Share + Referral Bonus
 ```
@@ -221,6 +227,7 @@ npm run build
 ## 🌍 Nigeria-Specific Features
 
 - 🇳🇬 Local context: Naira volatility, campus life, remittances
+- 🛡️ **Naija Safety Score**: Wallet health auditing via Webacy
 - 📚 Quiz questions focus on Nigerian use cases
 - 💬 Pidgin-friendly UI (optional localization)
 - 🎓 University-focused badge naming
