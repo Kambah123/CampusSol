@@ -263,7 +263,7 @@ export const LandingPage = ({ onStart }: LandingPageProps) => {
               <span className="font-bold">WEBACY</span>
             </div>
             <div className="flex-center gap-2">
-              < Smartphone className="w-6 h-6" />
+              <Smartphone className="w-6 h-6" />
               <span className="font-bold">TELEGRAM</span>
             </div>
             <div className="flex-center gap-2">
