@@ -15,6 +15,7 @@
   --accent-purple-dark: #7C3AED;
   --accent-green: #10B981;
   --accent-blue: #06B6D4;
+  --accent-gold: #F59E0B;
 
   /* Text Colors */
   --text-primary: #FFFFFF;
@@ -24,15 +25,17 @@
   /* Border & Effects */
   --border-subtle: rgba(255, 255, 255, 0.1);
   --border-glow: rgba(168, 85, 247, 0.3);
-  --glass-bg: rgba(255, 255, 255, 0.05);
+  --glass-bg: rgba(255, 255, 255, 0.03);
+  --glass-bg-heavy: rgba(255, 255, 255, 0.08);
 
   /* Spacing */
   --radius-sm: 12px;
   --radius-md: 16px;
   --radius-lg: 20px;
+  --radius-xl: 24px;
 
   /* Shadows */
-  --shadow-card: 0 4px 24px rgba(0, 0, 0, 0.4);
+  --shadow-card: 0 8px 32px rgba(0, 0, 0, 0.5);
   --shadow-glow: 0 0 40px rgba(168, 85, 247, 0.15);
   --shadow-glow-strong: 0 0 60px rgba(168, 85, 247, 0.25);
 }
@@ -74,17 +77,25 @@ h1, h2, h3, h4, h5, h6 {
 /* Glassmorphism Cards */
 .glass-card {
   background: var(--glass-bg);
-  backdrop-filter: blur(20px);
-  -webkit-backdrop-filter: blur(20px);
+  backdrop-filter: blur(24px);
+  -webkit-backdrop-filter: blur(24px);
   border: 1px solid var(--border-subtle);
   border-radius: var(--radius-md);
-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+.glass-card-heavy {
+  background: var(--glass-bg-heavy);
+  backdrop-filter: blur(32px);
+  -webkit-backdrop-filter: blur(32px);
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  border-radius: var(--radius-lg);
 }
 
 .glass-card:hover {
   border-color: var(--border-glow);
   box-shadow: var(--shadow-glow);
-  transform: translateY(-2px);
+  transform: translateY(-4px);
 }
 
 /* Buttons */
@@ -320,14 +331,35 @@ h1, h2, h3, h4, h5, h6 {
 }
 
 /* Safe Area */
-@supports (padding-top: env(safe-area-inset-top)) {
-  .safe-area-top {
-    padding-top: env(safe-area-inset-top);
-  }
+.safe-area-top {
+  padding-top: env(safe-area-inset-top, 0px);
+}
 
-  .safe-area-bottom {
-    padding-bottom: env(safe-area-inset-bottom);
-  }
+.safe-area-bottom {
+  padding-bottom: env(safe-area-inset-bottom, 0px);
+}
+
+/* Scroll Hide */
+.hide-scrollbar::-webkit-scrollbar {
+  display: none;
+}
+.hide-scrollbar {
+  -ms-overflow-style: none;
+  scrollbar-width: none;
+}
+
+/* Modern Layout Utilities */
+.flex-center {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.absolute-center {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  transform: translate(-50%, -50%);
 }
 
 /* Wallet Adapter Override */

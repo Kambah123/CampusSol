@@ -1,7 +1,8 @@
 // Campus SOL Starter - Rank Page (Leaderboard)
 
 import { useState } from 'react';
-import { Trophy, Medal, Award, Users, Zap } from 'lucide-react';
+import { motion } from 'framer-motion';
+import { Trophy, Medal, Award, Users, Zap, Search, Filter } from 'lucide-react';
 import type { LeaderboardEntry } from '@/types';
 import { getLeaderboard } from '@/hooks/useUserProgress';
 
@@ -63,10 +64,16 @@ export const RankPage = () => {
     }
   };
 
+  const [searchTerm, setSearchTerm] = useState('');
+
+  const filteredLeaderboard = leaderboard.filter(entry =>
+    (entry.firstName || entry.username || '').toLowerCase().includes(searchTerm.toLowerCase())
+  );
+
   return (
-    <div className="animate-slide-up">
+    <div className="animate-slide-up min-h-screen bg-[#0F0F1E]">
       {/* Header */}
-      <header className="px-4 pt-6 pb-4">
+      <header className="px-4 pt-8 pb-6">
         <div className="flex items-center gap-3 mb-2">
           <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-yellow-400 to-orange-500 flex items-center justify-center">
             <Trophy className="w-6 h-6 text-black" />
@@ -79,40 +86,78 @@ export const RankPage = () => {
       </header>
 
       {/* Stats */}
-      <section className="px-4 mb-6">
+      <section className="px-4 mb-8">
         <div className="grid grid-cols-3 gap-3">
-          <div className="glass-card p-4 text-center">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.1 }}
+            className="glass-card p-4 text-center relative overflow-hidden group"
+          >
+            <div className="absolute top-0 right-0 w-16 h-16 bg-purple-500/5 rounded-full -mr-8 -mt-8 group-hover:scale-150 transition-transform duration-500" />
             <Users className="w-5 h-5 text-[#A855F7] mx-auto mb-2" />
             <p className="text-xl font-bold text-white">{totalStudents}</p>
             <p className="text-[#64748B] text-xs">Students</p>
-          </div>
-          <div className="glass-card p-4 text-center">
+          </motion.div>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.2 }}
+            className="glass-card p-4 text-center relative overflow-hidden group"
+          >
+            <div className="absolute top-0 right-0 w-16 h-16 bg-green-500/5 rounded-full -mr-8 -mt-8 group-hover:scale-150 transition-transform duration-500" />
             <Zap className="w-5 h-5 text-[#10B981] mx-auto mb-2" />
             <p className="text-xl font-bold text-white">{totalDistributed.toFixed(2)}</p>
             <p className="text-[#64748B] text-xs">SOL</p>
-          </div>
-          <div className="glass-card p-4 text-center">
+          </motion.div>
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.3 }}
+            className="glass-card p-4 text-center relative overflow-hidden group"
+          >
+            <div className="absolute top-0 right-0 w-16 h-16 bg-yellow-500/5 rounded-full -mr-8 -mt-8 group-hover:scale-150 transition-transform duration-500" />
             <Award className="w-5 h-5 text-yellow-400 mx-auto mb-2" />
             <p className="text-xl font-bold text-white">{badgeHolders}</p>
             <p className="text-[#64748B] text-xs">Badges</p>
-          </div>
+          </motion.div>
+        </div>
+      </section>
+
+      {/* Search & Filter */}
+      <section className="px-4 mb-6">
+        <div className="relative">
+          <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500" />
+          <input
+            type="text"
+            placeholder="Search Pioneers..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="w-full h-12 pl-12 pr-4 bg-white/5 border border-white/10 rounded-2xl text-white placeholder:text-gray-600 focus:border-purple-500/50 focus:outline-none transition-all"
+          />
+          <button className="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-xl bg-white/5 flex-center border border-white/10 text-gray-400">
+            <Filter className="w-4 h-4" />
+          </button>
         </div>
       </section>
 
       {/* Leaderboard List */}
       <section className="px-4 pb-32">
-        {leaderboard.length === 0 ? (
+        {filteredLeaderboard.length === 0 ? (
           <div className="text-center py-12">
             <Trophy className="w-16 h-16 text-[#64748B] mx-auto mb-4" />
             <p className="text-[#A0AEC0]">No entries yet</p>
             <p className="text-[#64748B] text-sm">Be the first to complete quests!</p>
           </div>
         ) : (
-          <div className="space-y-2">
-            {leaderboard.slice(0, 20).map((entry, index) => (
-              <div
+          <div className="space-y-3">
+            {filteredLeaderboard.slice(0, 20).map((entry, index) => (
+              <motion.div
                 key={entry.userId}
-                className={`flex items-center gap-4 p-4 rounded-2xl ${getRankStyle(index)}`}
+                initial={{ opacity: 0, x: -10 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: index * 0.05 }}
+                className={`flex items-center gap-4 p-4 rounded-2xl border border-white/5 ${getRankStyle(index)}`}
               >
                 {/* Rank */}
                 {getRankIcon(index)}
@@ -141,11 +186,11 @@ export const RankPage = () => {
 
                 {/* SOL Amount */}
                 <div className="text-right">
-                  <span className="badge badge-purple">
+                  <span className="badge badge-purple bg-purple-500/10 backdrop-blur-md">
                     {entry.totalRewards.toFixed(3)} SOL
                   </span>
                 </div>
-              </div>
+              </motion.div>
             ))}
           </div>
         )}

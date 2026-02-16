@@ -5,18 +5,21 @@ import { Toaster } from 'sonner';
 import { Home, Target, Trophy, User } from 'lucide-react';
 
 // Pages
+import { LandingPage } from '@/pages/LandingPage';
 import { HomePage } from '@/pages/HomePage';
 import { QuestsPage } from '@/pages/QuestsPage';
 import { RankPage } from '@/pages/RankPage';
 import { ProfilePage } from '@/pages/ProfilePage';
 
-export type TabType = 'home' | 'quests' | 'rank' | 'profile';
+export type TabType = 'landing' | 'home' | 'quests' | 'rank' | 'profile';
 
 function App() {
-  const [currentTab, setCurrentTab] = useState<TabType>('home');
+  const [currentTab, setCurrentTab] = useState<TabType>('landing');
 
   const renderContent = () => {
     switch (currentTab) {
+      case 'landing':
+        return <LandingPage onStart={setCurrentTab} />;
       case 'home':
         return <HomePage onNavigate={setCurrentTab} />;
       case 'quests':
@@ -26,7 +29,7 @@ function App() {
       case 'profile':
         return <ProfilePage />;
       default:
-        return <HomePage onNavigate={setCurrentTab} />;
+        return <LandingPage onStart={setCurrentTab} />;
     }
   };
 
@@ -50,37 +53,39 @@ function App() {
         {renderContent()}
       </main>
 
-      {/* Bottom Navigation */}
-      <nav className="bottom-nav">
-        <button
-          className={`nav-item ${currentTab === 'home' ? 'active' : ''}`}
-          onClick={() => setCurrentTab('home')}
-        >
-          <Home />
-          <span>Home</span>
-        </button>
-        <button
-          className={`nav-item ${currentTab === 'quests' ? 'active' : ''}`}
-          onClick={() => setCurrentTab('quests')}
-        >
-          <Target />
-          <span>Quests</span>
-        </button>
-        <button
-          className={`nav-item ${currentTab === 'rank' ? 'active' : ''}`}
-          onClick={() => setCurrentTab('rank')}
-        >
-          <Trophy />
-          <span>Rank</span>
-        </button>
-        <button
-          className={`nav-item ${currentTab === 'profile' ? 'active' : ''}`}
-          onClick={() => setCurrentTab('profile')}
-        >
-          <User />
-          <span>Profile</span>
-        </button>
-      </nav>
+      {/* Bottom Navigation (Hide on Landing) */}
+      {currentTab !== 'landing' && (
+        <nav className="bottom-nav">
+          <button
+            className={`nav-item ${currentTab === 'home' ? 'active' : ''}`}
+            onClick={() => setCurrentTab('home')}
+          >
+            <Home />
+            <span>Home</span>
+          </button>
+          <button
+            className={`nav-item ${currentTab === 'quests' ? 'active' : ''}`}
+            onClick={() => setCurrentTab('quests')}
+          >
+            <Target />
+            <span>Quests</span>
+          </button>
+          <button
+            className={`nav-item ${currentTab === 'rank' ? 'active' : ''}`}
+            onClick={() => setCurrentTab('rank')}
+          >
+            <Trophy />
+            <span>Rank</span>
+          </button>
+          <button
+            className={`nav-item ${currentTab === 'profile' ? 'active' : ''}`}
+            onClick={() => setCurrentTab('profile')}
+          >
+            <User />
+            <span>Profile</span>
+          </button>
+        </nav>
+      )}
     </div>
   );
 }

@@ -1,6 +1,7 @@
 // Campus SOL Starter - Quests Page with Naija Flavor
 
 import { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import { useWallet } from '@solana/wallet-adapter-react';
 import {
   Target,
@@ -146,16 +147,25 @@ export const QuestsPage = () => {
 
       {/* Quests List */}
       <section className="px-4 pb-24">
-        <div className="space-y-3">
-          {filteredQuests.map((quest) => {
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          className="space-y-3"
+        >
+          {filteredQuests.map((quest, idx) => {
             const status = getQuestStatus(quest.id);
             const Icon = iconMap[quest.icon] || Target;
             const isCompleted = status === 'completed';
             const isLocked = status === 'locked';
 
             return (
-              <div
+              <motion.div
                 key={quest.id}
+                initial={{ opacity: 0, y: 20 }}
+                animate={{ opacity: 1, y: 0 }}
+                transition={{ delay: idx * 0.1 }}
+                whileHover={{ scale: isLocked ? 1 : 1.02 }}
+                whileTap={{ scale: isLocked ? 1 : 0.98 }}
                 onClick={() => !isLocked && setActiveQuest(quest.id)}
                 className={`glass-card p-4 flex items-center gap-4 cursor-pointer ${
                   isCompleted ? 'border-green-500/30' : ''
@@ -197,7 +207,7 @@ export const QuestsPage = () => {
 
                 {/* Reward & Arrow */}
                 <div className="flex items-center gap-3">
-                  <span className="badge badge-purple">
+                  <span className="badge badge-purple bg-purple-500/10">
                     <Coins className="w-3 h-3" />
                     +{quest.reward}
                   </span>
@@ -205,28 +215,30 @@ export const QuestsPage = () => {
                     <ChevronRight className="w-5 h-5 text-[#64748B]" />
                   )}
                 </div>
-              </div>
+              </motion.div>
             );
           })}
-        </div>
+        </motion.div>
       </section>
 
       {/* Quest Modal */}
-      {activeQuest && (
-        <QuestModal
-          questId={activeQuest}
-          onClose={() => setActiveQuest(null)}
-          connected={connected}
-          publicKey={publicKey}
-          onComplete={handleCompleteQuest}
-          quizState={quizState}
-          handleQuizAnswer={handleQuizAnswer}
-          submitQuizAnswer={submitQuizAnswer}
-          nextQuestion={nextQuestion}
-          qrData={qrData}
-          setQrData={setQrData}
-        />
-      )}
+      <AnimatePresence>
+        {activeQuest && (
+          <QuestModal
+            questId={activeQuest}
+            onClose={() => setActiveQuest(null)}
+            connected={connected}
+            publicKey={publicKey}
+            onComplete={handleCompleteQuest}
+            quizState={quizState}
+            handleQuizAnswer={handleQuizAnswer}
+            submitQuizAnswer={submitQuizAnswer}
+            nextQuestion={nextQuestion}
+            qrData={qrData}
+            setQrData={setQrData}
+          />
+        )}
+      </AnimatePresence>
     </div>
   );
 };
@@ -292,8 +304,18 @@ const QuestModal = ({
   switch (questId) {
     case 1:
       return (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
-          <div className="glass-card w-full max-w-md p-6 animate-slide-up">
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm"
+        >
+          <motion.div
+            initial={{ scale: 0.9, opacity: 0, y: 20 }}
+            animate={{ scale: 1, opacity: 1, y: 0 }}
+            exit={{ scale: 0.9, opacity: 0, y: 20 }}
+            className="glass-card w-full max-w-md p-6"
+          >
             <div className="flex items-center justify-between mb-6">
               <h2 className="text-xl font-bold text-white">Connect Wallet</h2>
               <button onClick={onClose} className="text-[#64748B] hover:text-white">
@@ -326,14 +348,24 @@ const QuestModal = ({
             >
               Claim Reward (+0.001 SOL)
             </button>
-          </div>
-        </div>
+          </motion.div>
+        </motion.div>
       );
 
     case 2:
       return (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
-          <div className="glass-card w-full max-w-md p-6 animate-slide-up">
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm"
+        >
+          <motion.div
+            initial={{ scale: 0.9, opacity: 0, y: 20 }}
+            animate={{ scale: 1, opacity: 1, y: 0 }}
+            exit={{ scale: 0.9, opacity: 0, y: 20 }}
+            className="glass-card w-full max-w-md p-6"
+          >
             <div className="flex items-center justify-between mb-6">
               <div className="flex items-center gap-2">
                 <Shield className="w-6 h-6 text-[#A855F7]" />
@@ -391,14 +423,24 @@ const QuestModal = ({
                 Verified by <span className="text-white font-bold">DD.xyz</span>
               </span>
             </div>
-          </div>
-        </div>
+          </motion.div>
+        </motion.div>
       );
 
     case 3:
       return (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
-          <div className="glass-card w-full max-w-md p-6 animate-slide-up">
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm"
+        >
+          <motion.div
+            initial={{ scale: 0.9, opacity: 0, y: 20 }}
+            animate={{ scale: 1, opacity: 1, y: 0 }}
+            exit={{ scale: 0.9, opacity: 0, y: 20 }}
+            className="glass-card w-full max-w-md p-6"
+          >
             <div className="flex items-center justify-between mb-6">
               <h2 className="text-xl font-bold text-white">Send Transaction</h2>
               <button onClick={onClose} className="text-[#64748B] hover:text-white">
@@ -430,14 +472,24 @@ const QuestModal = ({
                 {txRiskLoading ? <Loader2 className="w-5 h-5 animate-spin" /> : 'Verify & Complete'}
               </button>
             </div>
-          </div>
-        </div>
+          </motion.div>
+        </motion.div>
       );
 
     case 4:
       return (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
-          <div className="glass-card w-full max-w-md p-6 animate-slide-up">
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm"
+        >
+          <motion.div
+            initial={{ scale: 0.9, opacity: 0, y: 20 }}
+            animate={{ scale: 1, opacity: 1, y: 0 }}
+            exit={{ scale: 0.9, opacity: 0, y: 20 }}
+            className="glass-card w-full max-w-md p-6"
+          >
             <div className="flex items-center justify-between mb-6">
               <h2 className="text-xl font-bold text-white">Swap to USDC</h2>
               <button onClick={onClose} className="text-[#64748B] hover:text-white">
@@ -465,8 +517,8 @@ const QuestModal = ({
             >
               I&apos;ve Completed the Swap
             </button>
-          </div>
-        </div>
+          </motion.div>
+        </motion.div>
       );
 
     case 5:
@@ -493,8 +545,18 @@ const QuestModal = ({
       };
 
       return (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
-          <div className="glass-card w-full max-w-md p-6 animate-slide-up">
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm"
+        >
+          <motion.div
+            initial={{ scale: 0.9, opacity: 0, y: 20 }}
+            animate={{ scale: 1, opacity: 1, y: 0 }}
+            exit={{ scale: 0.9, opacity: 0, y: 20 }}
+            className="glass-card w-full max-w-md p-6"
+          >
             <div className="flex items-center justify-between mb-6">
               <h2 className="text-xl font-bold text-white">Solana Pay</h2>
               <button onClick={onClose} className="text-[#64748B] hover:text-white">
@@ -534,16 +596,26 @@ const QuestModal = ({
             >
               {txRiskLoading ? <Loader2 className="w-5 h-5 animate-spin" /> : 'Complete Quest'}
             </button>
-          </div>
-        </div>
+          </motion.div>
+        </motion.div>
       );
 
     case 6:
       if (quizState.completed) {
         const passed = quizState.score >= 7;
         return (
-          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
-            <div className="glass-card w-full max-w-md p-6 text-center animate-slide-up">
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm"
+          >
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0, y: 20 }}
+              animate={{ scale: 1, opacity: 1, y: 0 }}
+              exit={{ scale: 0.9, opacity: 0, y: 20 }}
+              className="glass-card w-full max-w-md p-6 text-center"
+            >
               <div className={`w-20 h-20 ${passed ? 'bg-green-500/20' : 'bg-yellow-500/20'} rounded-full flex items-center justify-center mx-auto mb-4`}>
                 <Brain className={`w-10 h-10 ${passed ? 'text-green-400' : 'text-yellow-400'}`} />
               </div>
@@ -565,15 +637,25 @@ const QuestModal = ({
               >
                 Close
               </button>
-            </div>
-          </div>
+            </motion.div>
+          </motion.div>
         );
       }
 
       const question = quizQuestions[quizState.currentQuestion];
       return (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
-          <div className="glass-card w-full max-w-md p-6 animate-slide-up">
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          exit={{ opacity: 0 }}
+          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm"
+        >
+          <motion.div
+            initial={{ scale: 0.9, opacity: 0, y: 20 }}
+            animate={{ scale: 1, opacity: 1, y: 0 }}
+            exit={{ scale: 0.9, opacity: 0, y: 20 }}
+            className="glass-card w-full max-w-md p-6"
+          >
             <div className="flex items-center justify-between mb-4">
               <span className="text-[#A855F7] font-semibold">
                 Question {quizState.currentQuestion + 1}/10
@@ -642,8 +724,8 @@ const QuestModal = ({
                 {quizState.currentQuestion < 9 ? 'Next Question' : 'Finish Quiz'}
               </button>
             )}
-          </div>
-        </div>
+          </motion.div>
+        </motion.div>
       );
 
     default:

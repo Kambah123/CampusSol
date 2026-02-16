@@ -1,13 +1,21 @@
-# 🎓 Campus SOL Starter
+# 🎓 Campus SOL Starter v2.0
 
 [![Solana](https://img.shields.io/badge/Solana-Devnet-9945FF?logo=solana)](https://solana.com)
 [![Telegram](https://img.shields.io/badge/Telegram-Mini%20App-26A5E4?logo=telegram)](https://telegram.org)
 [![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
 [![Made in Nigeria](https://img.shields.io/badge/Made%20in-Nigeria-008751.svg)](https://en.wikipedia.org/wiki/Nigeria)
 
-> 🇳🇬 A gamified Telegram Mini App for Nigerian university students to learn Solana basics, complete quests, earn real micro-rewards in SOL/USDC on devnet, and mint shareable compressed NFT badges.
+> 🇳🇬 A professional, gamified Telegram Mini App for Nigerian university students to learn Solana basics, complete quests, earn real micro-rewards in SOL/USDC on devnet, and mint shareable compressed NFT badges.
 
-![Campus SOL Starter](https://via.placeholder.com/800x400/9945FF/FFFFFF?text=Campus+SOL+Starter)
+![Campus SOL Starter v2.0](https://via.placeholder.com/800x400/9945FF/FFFFFF?text=Campus+SOL+Starter+v2.0)
+
+## 🚀 v2.0 Enhancements
+
+- 💎 **Professional Landing Page**: Enterprise-grade UI with Framer Motion animations.
+- 🪟 **Glassmorphism Design**: Modern, sleek aesthetics for all components and pages.
+- 🛡️ **Webacy Trust Shield**: Advanced security auditing and real-time risk scores.
+- ⚡ **Performance Optimized**: Built with Vite v6 and Tailwind CSS v4 for sub-second loads.
+- 📱 **Telegram Native UX**: Haptic feedback and safe-area optimization for iOS/Android.
 
 ## 🚀 Features
 
@@ -28,9 +36,10 @@
 
 ## 🛠 Tech Stack
 
-- **Frontend**: React + Vite + TypeScript
-- **Styling**: Tailwind CSS + shadcn/ui
-- **Telegram SDK**: @tma.js/sdk
+- **Frontend**: React 19 + Vite 6 + TypeScript
+- **Styling**: Tailwind CSS v4 + Glassmorphism
+- **Animations**: Framer Motion
+- **Telegram SDK**: @telegram-apps/sdk
 - **Security**: @webacy-xyz/sdk (DD.xyz API)
 - **Solana**: @solana/web3.js + Wallet Adapter
 - **Wallets**: Phantom, Solflare

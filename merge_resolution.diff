@@ -1,0 +1,3013 @@
+diff --git a/.npmrc b/.npmrc
+new file mode 100644
+index 0000000..521a9f7
+--- /dev/null
++++ b/.npmrc
+@@ -0,0 +1 @@
++legacy-peer-deps=true
+diff --git a/README.md b/README.md
+index 4ef79fe..820f5c0 100644
+--- a/README.md
++++ b/README.md
+@@ -1,13 +1,21 @@
+-# 🎓 Campus SOL Starter
++# 🎓 Campus SOL Starter v2.0
+
+ [![Solana](https://img.shields.io/badge/Solana-Devnet-9945FF?logo=solana)](https://solana.com)
+ [![Telegram](https://img.shields.io/badge/Telegram-Mini%20App-26A5E4?logo=telegram)](https://telegram.org)
+ [![License](https://img.shields.io/badge/License-MIT-green.svg)](LICENSE)
+ [![Made in Nigeria](https://img.shields.io/badge/Made%20in-Nigeria-008751.svg)](https://en.wikipedia.org/wiki/Nigeria)
+
+-> 🇳🇬 A gamified Telegram Mini App for Nigerian university students to learn Solana basics, complete quests, earn real micro-rewards in SOL/USDC on devnet, and mint shareable compressed NFT badges.
++> 🇳🇬 A professional, gamified Telegram Mini App for Nigerian university students to learn Solana basics, complete quests, earn real micro-rewards in SOL/USDC on devnet, and mint shareable compressed NFT badges.
+
+-![Campus SOL Starter](https://via.placeholder.com/800x400/9945FF/FFFFFF?text=Campus+SOL+Starter)
++![Campus SOL Starter v2.0](https://via.placeholder.com/800x400/9945FF/FFFFFF?text=Campus+SOL+Starter+v2.0)
++
++## 🚀 v2.0 Enhancements
++
++- 💎 **Professional Landing Page**: Enterprise-grade UI with Framer Motion animations.
++- 🪟 **Glassmorphism Design**: Modern, sleek aesthetics for all components and pages.
++- 🛡️ **Webacy Trust Shield**: Advanced security auditing and real-time risk scores.
++- ⚡ **Performance Optimized**: Built with Vite v6 and Tailwind CSS v4 for sub-second loads.
++- 📱 **Telegram Native UX**: Haptic feedback and safe-area optimization for iOS/Android.
+
+ ## 🚀 Features
+
+@@ -28,9 +36,10 @@
+
+ ## 🛠 Tech Stack
+
+-- **Frontend**: React + Vite + TypeScript
+-- **Styling**: Tailwind CSS + shadcn/ui
+-- **Telegram SDK**: @tma.js/sdk
++- **Frontend**: React 19 + Vite 6 + TypeScript
++- **Styling**: Tailwind CSS v4 + Glassmorphism
++- **Animations**: Framer Motion
++- **Telegram SDK**: @telegram-apps/sdk
+ - **Security**: @webacy-xyz/sdk (DD.xyz API)
+ - **Solana**: @solana/web3.js + Wallet Adapter
+ - **Wallets**: Phantom, Solflare
+diff --git a/package-lock.json b/package-lock.json
+index f5562d2..f4ff79e 100644
+--- a/package-lock.json
++++ b/package-lock.json
+@@ -47,9 +47,9 @@
+         "@solana/wallet-adapter-react-ui": "^0.9.39",
+         "@solana/wallet-adapter-solflare": "^0.6.32",
+         "@solana/web3.js": "^1.98.4",
++        "@telegram-apps/sdk": "^3.11.8",
++        "@telegram-apps/sdk-react": "^3.3.9",
+         "@telegram-apps/telegram-ui": "^2.1.13",
+-        "@tma.js/sdk": "^3.1.6",
+-        "@tma.js/sdk-react": "^3.0.15",
+         "@webacy-xyz/sdk": "^1.2.1",
+         "bignumber.js": "^9.1.2",
+         "bs58": "^6.0.0",
+@@ -59,6 +59,7 @@
+         "cmdk": "^1.0.0",
+         "date-fns": "^4.1.0",
+         "embla-carousel-react": "^8.3.0",
++        "framer-motion": "^12.34.0",
+         "input-otp": "^1.2.4",
+         "lucide-react": "^0.470.0",
+         "next-themes": "^0.4.0",
+@@ -93,7 +94,8 @@
+         "tw-animate-css": "^1.4.0",
+         "typescript": "~5.7.2",
+         "typescript-eslint": "^8.18.0",
+-        "vite": "^6.0.0"
++        "vite": "^6.0.0",
++        "vite-plugin-node-polyfills": "^0.25.0"
+       }
+     },
+     "node_modules/@babel/code-frame": {
+@@ -5883,6 +5885,52 @@
+       "dev": true,
+       "license": "MIT"
+     },
++    "node_modules/@rollup/plugin-inject": {
++      "version": "5.0.5",
++      "resolved": "https://registry.npmjs.org/@rollup/plugin-inject/-/plugin-inject-5.0.5.tgz",
++      "integrity": "sha512-2+DEJbNBoPROPkgTDNe8/1YXWcqxbN5DTjASVIOx8HS+pITXushyNiBV56RB08zuptzz8gT3YfkqriTBVycepg==",
++      "dev": true,
++      "license": "MIT",
++      "dependencies": {
++        "@rollup/pluginutils": "^5.0.1",
++        "estree-walker": "^2.0.2",
++        "magic-string": "^0.30.3"
++      },
++      "engines": {
++        "node": ">=14.0.0"
++      },
++      "peerDependencies": {
++        "rollup": "^1.20.0||^2.0.0||^3.0.0||^4.0.0"
++      },
++      "peerDependenciesMeta": {
++        "rollup": {
++          "optional": true
++        }
++      }
++    },
++    "node_modules/@rollup/pluginutils": {
++      "version": "5.3.0",
++      "resolved": "https://registry.npmjs.org/@rollup/pluginutils/-/pluginutils-5.3.0.tgz",
++      "integrity": "sha512-5EdhGZtnu3V88ces7s53hhfK5KSASnJZv8Lulpc04cWO3REESroJXg73DFsOmgbU2BhwV0E20bu2IDZb3VKW4Q==",
++      "dev": true,
++      "license": "MIT",
++      "dependencies": {
++        "@types/estree": "^1.0.0",
++        "estree-walker": "^2.0.2",
++        "picomatch": "^4.0.2"
++      },
++      "engines": {
++        "node": ">=14.0.0"
++      },
++      "peerDependencies": {
++        "rollup": "^1.20.0||^2.0.0||^3.0.0||^4.0.0"
++      },
++      "peerDependenciesMeta": {
++        "rollup": {
++          "optional": true
++        }
++      }
++    },
+     "node_modules/@rollup/rollup-android-arm-eabi": {
+       "version": "4.55.1",
+       "resolved": "https://registry.npmjs.org/@rollup/rollup-android-arm-eabi/-/rollup-android-arm-eabi-4.55.1.tgz",
+@@ -7488,67 +7536,82 @@
+         "vite": "^5.2.0 || ^6 || ^7"
+       }
+     },
+-    "node_modules/@telegram-apps/telegram-ui": {
+-      "version": "2.1.13",
+-      "resolved": "https://registry.npmjs.org/@telegram-apps/telegram-ui/-/telegram-ui-2.1.13.tgz",
+-      "integrity": "sha512-W8a3pxyyLWPSp43GSOzo2i4BKcZ4okgaWiL1TU8rkwUXdANT0tR0yYDIqVRY1rOkT9mimJLK8fDQDxeuz8zOoA==",
++    "node_modules/@telegram-apps/bridge": {
++      "version": "2.11.0",
++      "resolved": "https://registry.npmjs.org/@telegram-apps/bridge/-/bridge-2.11.0.tgz",
++      "integrity": "sha512-kBZjWRRp/lxKeQ8r8cDWUY9EjxUtyeh/9xTQjsjuGRsCR5XTO1cyVbvcvqzHn53csGx3aBs+fOR3Pk3b6w2JHg==",
++      "deprecated": "This package is not supported anymore. Use @tma.js/bridge instead",
+       "license": "MIT",
+       "dependencies": {
+-        "@floating-ui/react-dom": "^2.0.8",
+-        "@swc/helpers": "^0.5.3",
+-        "@twa-dev/types": "^7.0.0",
+-        "@xelene/vaul-with-scroll-fix": "0.1.4"
+-      },
+-      "engines": {
+-        "node": ">=18.0.0",
+-        "npm": ">=7.0.0"
+-      },
+-      "peerDependencies": {
+-        "react": "^18.2.0",
+-        "react-dom": "^18.2.0"
++        "@telegram-apps/signals": "^1.1.2",
++        "@telegram-apps/toolkit": "^2.1.3",
++        "@telegram-apps/transformers": "^2.2.6",
++        "@telegram-apps/types": "^2.0.3",
++        "better-promises": "^0.4.1",
++        "error-kid": "^0.0.7",
++        "mitt": "^3.0.1",
++        "valibot": "1.0.0"
+       }
+     },
+-    "node_modules/@tma.js/bridge": {
+-      "version": "2.2.2",
+-      "resolved": "https://registry.npmjs.org/@tma.js/bridge/-/bridge-2.2.2.tgz",
+-      "integrity": "sha512-dL7iZzYP/VC4/qJYSXPI1GXLGP3gLTp10L7iGY6PcjB2F4xXS2JnHUoYvD2DgQG1ogjE93zWnVIMN7inx1v+Eg==",
++    "node_modules/@telegram-apps/bridge/node_modules/better-promises": {
++      "version": "0.4.1",
++      "resolved": "https://registry.npmjs.org/better-promises/-/better-promises-0.4.1.tgz",
++      "integrity": "sha512-cDW7eMvhvCoWzSih5o/OxsAgTUfP05yGMq77xNZUTmcZoNU9vEeFZJ+yJJi4lnocvxFrVFKsG0Yxt7ZnuYJEig==",
+       "license": "MIT",
+       "dependencies": {
+-        "@tma.js/signals": "^1.0.1",
+-        "@tma.js/toolkit": "^1.0.4",
+-        "@tma.js/transformers": "^1.1.3",
+-        "@tma.js/types": "^1.0.2",
+-        "better-promises": "^1.0.0",
+-        "error-kid": "^1.0.2",
+-        "fp-ts": "^2.16.11",
+-        "mitt": "^3.0.1",
+-        "valibot": "^1.1.0"
++        "error-kid": "^0.0.7"
+       }
+     },
+-    "node_modules/@tma.js/sdk": {
+-      "version": "3.1.6",
+-      "resolved": "https://registry.npmjs.org/@tma.js/sdk/-/sdk-3.1.6.tgz",
+-      "integrity": "sha512-NENkQa7G5N9kwbL20ErUMO9Fukxl9eVhcJ439PbCg2WYMk/x9oNbx2DhEzhX4xM718zSjYejmSj1oXCKk0PxYA==",
++    "node_modules/@telegram-apps/bridge/node_modules/error-kid": {
++      "version": "0.0.7",
++      "resolved": "https://registry.npmjs.org/error-kid/-/error-kid-0.0.7.tgz",
++      "integrity": "sha512-8mFs7ZaDWlBFgjOy4lHLMCe2+KZfZXGx5GOgh2VQ/M1CCIvSWzbl2OMl+5fdZgrgoUfhTeF+NPhmqfEvUhN8yw==",
++      "license": "MIT"
++    },
++    "node_modules/@telegram-apps/bridge/node_modules/valibot": {
++      "version": "1.0.0",
++      "resolved": "https://registry.npmjs.org/valibot/-/valibot-1.0.0.tgz",
++      "integrity": "sha512-1Hc0ihzWxBar6NGeZv7fPLY0QuxFMyxwYR2sF1Blu7Wq7EnremwY2W02tit2ij2VJT8HcSkHAQqmFfl77f73Yw==",
++      "license": "MIT",
++      "peerDependencies": {
++        "typescript": ">=5"
++      },
++      "peerDependenciesMeta": {
++        "typescript": {
++          "optional": true
++        }
++      }
++    },
++    "node_modules/@telegram-apps/navigation": {
++      "version": "1.0.14",
++      "resolved": "https://registry.npmjs.org/@telegram-apps/navigation/-/navigation-1.0.14.tgz",
++      "integrity": "sha512-bqNgF/J8Po7ZtsELm3E1a6aPr7awwxO3sIqD8J6u12urOlGoW5+1KxKKbkPa58mgXuQdsltd8apI+OVy0IYiUA==",
++      "license": "MIT"
++    },
++    "node_modules/@telegram-apps/sdk": {
++      "version": "3.11.8",
++      "resolved": "https://registry.npmjs.org/@telegram-apps/sdk/-/sdk-3.11.8.tgz",
++      "integrity": "sha512-vlpkYzMJCV9Cadsn9Q+/hbHNR39j5o96N9z4CjZ6AFHkkxOeOqVRrq9zRBw0gmffROkF2bU0WQxhRj8KZ/bPhw==",
+       "license": "MIT",
+       "dependencies": {
+-        "@tma.js/bridge": "^2.2.2",
+-        "@tma.js/signals": "^1.0.1",
+-        "@tma.js/toolkit": "^1.0.4",
+-        "@tma.js/transformers": "^1.1.3",
+-        "@tma.js/types": "^1.0.2",
+-        "better-promises": "^1.0.0",
+-        "error-kid": "^1.0.2",
+-        "fp-ts": "^2.16.11",
+-        "valibot": "^1.1.0"
++        "@telegram-apps/bridge": "^2.11.0",
++        "@telegram-apps/navigation": "^1.0.14",
++        "@telegram-apps/signals": "^1.1.2",
++        "@telegram-apps/toolkit": "^2.1.3",
++        "@telegram-apps/transformers": "^2.2.6",
++        "@telegram-apps/types": "^2.0.3",
++        "better-promises": "^0.4.1",
++        "error-kid": "^0.0.7",
++        "valibot": "1.0.0"
+       }
+     },
+-    "node_modules/@tma.js/sdk-react": {
+-      "version": "3.0.15",
+-      "resolved": "https://registry.npmjs.org/@tma.js/sdk-react/-/sdk-react-3.0.15.tgz",
+-      "integrity": "sha512-HsgqPINSBK87NIRZ+ZDol07QPhSQ3GOTofyZEH0xoaQjZWb9wVxUXwECa5ozRUdzWZI+Mgx8oD1pzrjyNkDjFA==",
++    "node_modules/@telegram-apps/sdk-react": {
++      "version": "3.3.9",
++      "resolved": "https://registry.npmjs.org/@telegram-apps/sdk-react/-/sdk-react-3.3.9.tgz",
++      "integrity": "sha512-85jF1ICT8sYCNzXu19SqJrfrS8XslsvV14KUcToiyL7H5ZMXHt0JQKM+QJgULjnLjEswweQ4/7Bd7mNULf/BIg==",
+       "license": "MIT",
+       "dependencies": {
+-        "@tma.js/sdk": "^3.1.6"
++        "@telegram-apps/sdk": "^3.11.8"
+       },
+       "peerDependencies": {
+         "@types/react": "^17.0.0 || ^18.0.0 || ^19.0.0",
+@@ -7560,38 +7623,98 @@
+         }
+       }
+     },
+-    "node_modules/@tma.js/signals": {
+-      "version": "1.0.1",
+-      "resolved": "https://registry.npmjs.org/@tma.js/signals/-/signals-1.0.1.tgz",
+-      "integrity": "sha512-i2HUuwGqL4BmM5KAklAUhMhlEgUOF+F4nMHHS/zxrmD0upHE/0CiXCEdQxVeeOGN6e2RrKlonA40sDtR6OUDCw==",
++    "node_modules/@telegram-apps/sdk/node_modules/better-promises": {
++      "version": "0.4.1",
++      "resolved": "https://registry.npmjs.org/better-promises/-/better-promises-0.4.1.tgz",
++      "integrity": "sha512-cDW7eMvhvCoWzSih5o/OxsAgTUfP05yGMq77xNZUTmcZoNU9vEeFZJ+yJJi4lnocvxFrVFKsG0Yxt7ZnuYJEig==",
++      "license": "MIT",
++      "dependencies": {
++        "error-kid": "^0.0.7"
++      }
++    },
++    "node_modules/@telegram-apps/sdk/node_modules/error-kid": {
++      "version": "0.0.7",
++      "resolved": "https://registry.npmjs.org/error-kid/-/error-kid-0.0.7.tgz",
++      "integrity": "sha512-8mFs7ZaDWlBFgjOy4lHLMCe2+KZfZXGx5GOgh2VQ/M1CCIvSWzbl2OMl+5fdZgrgoUfhTeF+NPhmqfEvUhN8yw==",
+       "license": "MIT"
+     },
+-    "node_modules/@tma.js/toolkit": {
+-      "version": "1.0.4",
+-      "resolved": "https://registry.npmjs.org/@tma.js/toolkit/-/toolkit-1.0.4.tgz",
+-      "integrity": "sha512-6CDlkgc+43WD2jy6jog3B50yt9t+/wRwrN25zOa4iSw4IzfqoFjaQcJzTupBYaRxz19C3Rrir7p0/qStS/Z8vw==",
++    "node_modules/@telegram-apps/sdk/node_modules/valibot": {
++      "version": "1.0.0",
++      "resolved": "https://registry.npmjs.org/valibot/-/valibot-1.0.0.tgz",
++      "integrity": "sha512-1Hc0ihzWxBar6NGeZv7fPLY0QuxFMyxwYR2sF1Blu7Wq7EnremwY2W02tit2ij2VJT8HcSkHAQqmFfl77f73Yw==",
++      "license": "MIT",
++      "peerDependencies": {
++        "typescript": ">=5"
++      },
++      "peerDependenciesMeta": {
++        "typescript": {
++          "optional": true
++        }
++      }
++    },
++    "node_modules/@telegram-apps/signals": {
++      "version": "1.1.2",
++      "resolved": "https://registry.npmjs.org/@telegram-apps/signals/-/signals-1.1.2.tgz",
++      "integrity": "sha512-1P1kdCLX7MfETGPxH7f3UZKIsdE7Tz5S7QmN4Km1sbYQMakD5Bi1NecSMR7/wnHp50gWMI1JzENcMtCEmouhSg==",
++      "license": "MIT"
++    },
++    "node_modules/@telegram-apps/telegram-ui": {
++      "version": "2.1.13",
++      "resolved": "https://registry.npmjs.org/@telegram-apps/telegram-ui/-/telegram-ui-2.1.13.tgz",
++      "integrity": "sha512-W8a3pxyyLWPSp43GSOzo2i4BKcZ4okgaWiL1TU8rkwUXdANT0tR0yYDIqVRY1rOkT9mimJLK8fDQDxeuz8zOoA==",
+       "license": "MIT",
+       "dependencies": {
+-        "better-promises": "^1.0.0",
+-        "fp-ts": "^2.16.11"
++        "@floating-ui/react-dom": "^2.0.8",
++        "@swc/helpers": "^0.5.3",
++        "@twa-dev/types": "^7.0.0",
++        "@xelene/vaul-with-scroll-fix": "0.1.4"
++      },
++      "engines": {
++        "node": ">=18.0.0",
++        "npm": ">=7.0.0"
++      },
++      "peerDependencies": {
++        "react": "^18.2.0",
++        "react-dom": "^18.2.0"
+       }
+     },
+-    "node_modules/@tma.js/transformers": {
+-      "version": "1.1.3",
+-      "resolved": "https://registry.npmjs.org/@tma.js/transformers/-/transformers-1.1.3.tgz",
+-      "integrity": "sha512-zRL+fdo/NBpGqCJfl8ItAvcJIFT5Zy6UOYJwQPmUV5/gTHgmSvmGlrP43PeVi9XZ7Ggf4xbO6LUa4ehxozhMTA==",
++    "node_modules/@telegram-apps/toolkit": {
++      "version": "2.1.3",
++      "resolved": "https://registry.npmjs.org/@telegram-apps/toolkit/-/toolkit-2.1.3.tgz",
++      "integrity": "sha512-LPUBL7hxQTOr+Dowyk9a1O82nQS4ja4+OYiYWtvqq5nNUHC6Gbbus0zGWCbFcj9CLnIzaeb5HWOg5iSnhoRcyg==",
++      "license": "MIT"
++    },
++    "node_modules/@telegram-apps/transformers": {
++      "version": "2.2.6",
++      "resolved": "https://registry.npmjs.org/@telegram-apps/transformers/-/transformers-2.2.6.tgz",
++      "integrity": "sha512-MMBRs3demeBT9Cd614KKZmak7eEyNdEbfu99a0SwEEJe2oIODjJLrUxrhUcAOc5wvTRfrKka27VXVgruauLhdg==",
++      "deprecated": "This package is not supported anymore. Use @tma.js/transfomers instead",
+       "license": "MIT",
+       "dependencies": {
+-        "@tma.js/toolkit": "^1.0.4",
+-        "@tma.js/types": "^1.0.2",
+-        "fp-ts": "^2.16.11",
+-        "valibot": "^1.1.0"
++        "@telegram-apps/toolkit": "^2.1.3",
++        "@telegram-apps/types": "^2.0.3",
++        "valibot": "1.0.0-beta.14"
+       }
+     },
+-    "node_modules/@tma.js/types": {
+-      "version": "1.0.2",
+-      "resolved": "https://registry.npmjs.org/@tma.js/types/-/types-1.0.2.tgz",
+-      "integrity": "sha512-qs4mi+U1xZmMQBdMhWAo1X4YqUJ/ae0y28s+GNCpQq58bsJo0h8rvyVOB1RwPvXogIY9+yribbZe6z3AIJmsAQ==",
++    "node_modules/@telegram-apps/transformers/node_modules/valibot": {
++      "version": "1.0.0-beta.14",
++      "resolved": "https://registry.npmjs.org/valibot/-/valibot-1.0.0-beta.14.tgz",
++      "integrity": "sha512-tLyV2rE5QL6U29MFy3xt4AqMrn+/HErcp2ZThASnQvPMwfSozjV1uBGKIGiegtZIGjinJqn0SlBdannf18wENA==",
++      "license": "MIT",
++      "peerDependencies": {
++        "typescript": ">=5"
++      },
++      "peerDependenciesMeta": {
++        "typescript": {
++          "optional": true
++        }
++      }
++    },
++    "node_modules/@telegram-apps/types": {
++      "version": "2.0.3",
++      "resolved": "https://registry.npmjs.org/@telegram-apps/types/-/types-2.0.3.tgz",
++      "integrity": "sha512-pXh9BdnLZF3e2BGc4WL+RTRMAUpqKpaSP3Rs8rB4WyRwIoRSGWFKE4gtT/9m42LGixB8YVwdo/pJ+9XO765XEA==",
++      "deprecated": "This package is not supported anymore. Use @tma.js/types instead",
+       "license": "MIT"
+     },
+     "node_modules/@twa-dev/types": {
+@@ -8496,6 +8619,20 @@
+       "integrity": "sha512-n4DSx829VRTRByMRGdjQ9iqsN0Bh4OolPsFnaZBLcbi8iXcB+kJ9s7EnRt4wILZNV3kPLHkRVfOc/HvhC3ovDw==",
+       "license": "MIT"
+     },
++    "node_modules/assert": {
++      "version": "2.1.0",
++      "resolved": "https://registry.npmjs.org/assert/-/assert-2.1.0.tgz",
++      "integrity": "sha512-eLHpSK/Y4nhMJ07gDaAzoX/XAKS8PSaojml3M0DM4JpV1LAi5JOJ/p6H/XWrl8L+DzVEvVCW1z3vWAaB9oTsQw==",
++      "dev": true,
++      "license": "MIT",
++      "dependencies": {
++        "call-bind": "^1.0.2",
++        "is-nan": "^1.3.2",
++        "object-is": "^1.1.5",
++        "object.assign": "^4.1.4",
++        "util": "^0.12.5"
++      }
++    },
+     "node_modules/async-retry": {
+       "version": "1.3.3",
+       "resolved": "https://registry.npmjs.org/async-retry/-/async-retry-1.3.3.tgz",
+@@ -8653,15 +8790,6 @@
+       "integrity": "sha512-s0IrSOzLlbvX7yp4WBfPITzpAU8sqQcpsmwXDiKwrG4r491vwCO/XpejasRNl0piBMe/DvP4Tz0mIS/X1DPJBQ==",
+       "license": "MIT"
+     },
+-    "node_modules/better-promises": {
+-      "version": "1.0.0",
+-      "resolved": "https://registry.npmjs.org/better-promises/-/better-promises-1.0.0.tgz",
+-      "integrity": "sha512-gPgL2nRgeSbMIe3QpsYdKR3K0S9OZuphVuos60Eqsw8d/6GivOkyJ5D/zmnolJ6hzh7upnnflBUWUlQh4qpU2A==",
+-      "license": "MIT",
+-      "dependencies": {
+-        "error-kid": "^1.0.1"
+-      }
+-    },
+     "node_modules/bigint-buffer": {
+       "version": "1.1.5",
+       "resolved": "https://registry.npmjs.org/bigint-buffer/-/bigint-buffer-1.1.5.tgz",
+@@ -8808,6 +8936,149 @@
+       "integrity": "sha512-cKV8tMCEpQs4hK/ik71d6LrPOnpkpGBR0wzxqr68g2m/LB2GxVYQroAjMJZRVM1Y4BCjCKc3vAamxSzOY2RP+w==",
+       "license": "MIT"
+     },
++    "node_modules/browser-resolve": {
++      "version": "2.0.0",
++      "resolved": "https://registry.npmjs.org/browser-resolve/-/browser-resolve-2.0.0.tgz",
++      "integrity": "sha512-7sWsQlYL2rGLy2IWm8WL8DCTJvYLc/qlOnsakDac87SOoCd16WLsaAMdCiAqsTNHIe+SXfaqyxyo6THoWqs8WQ==",
++      "dev": true,
++      "license": "MIT",
++      "dependencies": {
++        "resolve": "^1.17.0"
++      }
++    },
++    "node_modules/browserify-aes": {
++      "version": "1.2.0",
++      "resolved": "https://registry.npmjs.org/browserify-aes/-/browserify-aes-1.2.0.tgz",
++      "integrity": "sha512-+7CHXqGuspUn/Sl5aO7Ea0xWGAtETPXNSAjHo48JfLdPWcMng33Xe4znFvQweqc/uzk5zSOI3H52CYnjCfb5hA==",
++      "dev": true,
++      "license": "MIT",
++      "dependencies": {
++        "buffer-xor": "^1.0.3",
++        "cipher-base": "^1.0.0",
++        "create-hash": "^1.1.0",
++        "evp_bytestokey": "^1.0.3",
++        "inherits": "^2.0.1",
++        "safe-buffer": "^5.0.1"
++      }
++    },
++    "node_modules/browserify-cipher": {
++      "version": "1.0.1",
++      "resolved": "https://registry.npmjs.org/browserify-cipher/-/browserify-cipher-1.0.1.tgz",
++      "integrity": "sha512-sPhkz0ARKbf4rRQt2hTpAHqn47X3llLkUGn+xEJzLjwY8LRs2p0v7ljvI5EyoRO/mexrNunNECisZs+gw2zz1w==",
++      "dev": true,
++      "license": "MIT",
++      "dependencies": {
++        "browserify-aes": "^1.0.4",
++        "browserify-des": "^1.0.0",
++        "evp_bytestokey": "^1.0.0"
++      }
++    },
++    "node_modules/browserify-des": {
++      "version": "1.0.2",
++      "resolved": "https://registry.npmjs.org/browserify-des/-/browserify-des-1.0.2.tgz",
++      "integrity": "sha512-BioO1xf3hFwz4kc6iBhI3ieDFompMhrMlnDFC4/0/vd5MokpuAc3R+LYbwTA9A5Yc9pq9UYPqffKpW2ObuwX5A==",
++      "dev": true,
++      "license": "MIT",
++      "dependencies": {
++        "cipher-base": "^1.0.1",
++        "des.js": "^1.0.0",
++        "inherits": "^2.0.1",
++        "safe-buffer": "^5.1.2"
++      }
++    },
++    "node_modules/browserify-rsa": {
++      "version": "4.1.1",
++      "resolved": "https://registry.npmjs.org/browserify-rsa/-/browserify-rsa-4.1.1.tgz",
++      "integrity": "sha512-YBjSAiTqM04ZVei6sXighu679a3SqWORA3qZTEqZImnlkDIFtKc6pNutpjyZ8RJTjQtuYfeetkxM11GwoYXMIQ==",
++      "dev": true,
++      "license": "MIT",
++      "dependencies": {
++        "bn.js": "^5.2.1",
++        "randombytes": "^2.1.0",
++        "safe-buffer": "^5.2.1"
++      },
++      "engines": {
++        "node": ">= 0.10"
++      }
++    },
++    "node_modules/browserify-sign": {
++      "version": "4.2.5",
++      "resolved": "https://registry.npmjs.org/browserify-sign/-/browserify-sign-4.2.5.tgz",
++      "integrity": "sha512-C2AUdAJg6rlM2W5QMp2Q4KGQMVBwR1lIimTsUnutJ8bMpW5B52pGpR2gEnNBNwijumDo5FojQ0L9JrXA8m4YEw==",
++      "dev": true,
++      "license": "ISC",
++      "dependencies": {
++        "bn.js": "^5.2.2",
++        "browserify-rsa": "^4.1.1",
++        "create-hash": "^1.2.0",
++        "create-hmac": "^1.1.7",
++        "elliptic": "^6.6.1",
++        "inherits": "^2.0.4",
++        "parse-asn1": "^5.1.9",
++        "readable-stream": "^2.3.8",
++        "safe-buffer": "^5.2.1"
++      },
++      "engines": {
++        "node": ">= 0.10"
++      }
++    },
++    "node_modules/browserify-sign/node_modules/isarray": {
++      "version": "1.0.0",
++      "resolved": "https://registry.npmjs.org/isarray/-/isarray-1.0.0.tgz",
++      "integrity": "sha512-VLghIWNM6ELQzo7zwmcg0NmTVyWKYjvIeM83yjp0wRDTmUnrM678fQbcKBo6n2CJEF0szoG//ytg+TKla89ALQ==",
++      "dev": true,
++      "license": "MIT"
++    },
++    "node_modules/browserify-sign/node_modules/readable-stream": {
++      "version": "2.3.8",
++      "resolved": "https://registry.npmjs.org/readable-stream/-/readable-stream-2.3.8.tgz",
++      "integrity": "sha512-8p0AUk4XODgIewSi0l8Epjs+EVnWiK7NoDIEGU0HhE7+ZyY8D1IMY7odu5lRrFXGg71L15KG8QrPmum45RTtdA==",
++      "dev": true,
++      "license": "MIT",
++      "dependencies": {
++        "core-util-is": "~1.0.0",
++        "inherits": "~2.0.3",
++        "isarray": "~1.0.0",
++        "process-nextick-args": "~2.0.0",
++        "safe-buffer": "~5.1.1",
++        "string_decoder": "~1.1.1",
++        "util-deprecate": "~1.0.1"
++      }
++    },
++    "node_modules/browserify-sign/node_modules/readable-stream/node_modules/safe-buffer": {
++      "version": "5.1.2",
++      "resolved": "https://registry.npmjs.org/safe-buffer/-/safe-buffer-5.1.2.tgz",
++      "integrity": "sha512-Gd2UZBJDkXlY7GbJxfsE8/nvKkUEU1G38c1siN6QP6a9PT9MmHB8GnpscSmMJSoF8LOIrt8ud/wPtojys4G6+g==",
++      "dev": true,
++      "license": "MIT"
++    },
++    "node_modules/browserify-sign/node_modules/string_decoder": {
++      "version": "1.1.1",
++      "resolved": "https://registry.npmjs.org/string_decoder/-/string_decoder-1.1.1.tgz",
++      "integrity": "sha512-n/ShnvDi6FHbbVfviro+WojiFzv+s8MPMHBczVePfUpDJLwoLT0ht1l4YwBCbi8pJAveEEdnkHyPyTP/mzRfwg==",
++      "dev": true,
++      "license": "MIT",
++      "dependencies": {
++        "safe-buffer": "~5.1.0"
++      }
++    },
++    "node_modules/browserify-sign/node_modules/string_decoder/node_modules/safe-buffer": {
++      "version": "5.1.2",
++      "resolved": "https://registry.npmjs.org/safe-buffer/-/safe-buffer-5.1.2.tgz",
++      "integrity": "sha512-Gd2UZBJDkXlY7GbJxfsE8/nvKkUEU1G38c1siN6QP6a9PT9MmHB8GnpscSmMJSoF8LOIrt8ud/wPtojys4G6+g==",
++      "dev": true,
++      "license": "MIT"
++    },
++    "node_modules/browserify-zlib": {
++      "version": "0.2.0",
++      "resolved": "https://registry.npmjs.org/browserify-zlib/-/browserify-zlib-0.2.0.tgz",
++      "integrity": "sha512-Z942RysHXmJrhqk88FmKBVq/v5tqmSkDz7p54G/MGyjMnCFFnC79XWNbg+Vta8W6Wb2qtSZTSxIGkJrRpCFEiA==",
++      "dev": true,
++      "license": "MIT",
++      "dependencies": {
++        "pako": "~1.0.5"
++      }
++    },
+     "node_modules/browserslist": {
+       "version": "4.28.1",
+       "resolved": "https://registry.npmjs.org/browserslist/-/browserslist-4.28.1.tgz",
+@@ -8890,6 +9161,13 @@
+       "integrity": "sha512-M87YIUBsZ6N924W57vDwT/aOu8hw7ZgdByz6ijksLjmHJELBASmYTTlNHRgjE+pTsT9oJXGaDSgqqwfdHotDUg==",
+       "license": "MIT"
+     },
++    "node_modules/buffer-xor": {
++      "version": "1.0.3",
++      "resolved": "https://registry.npmjs.org/buffer-xor/-/buffer-xor-1.0.3.tgz",
++      "integrity": "sha512-571s0T7nZWK6vB67HI5dyUF7wXiNcfaPPPTl6zYCNApANjIvYJTg7hlud/+cJpdAhS7dVzqMLmfhfHR3rAcOjQ==",
++      "dev": true,
++      "license": "MIT"
++    },
+     "node_modules/bufferutil": {
+       "version": "4.1.0",
+       "resolved": "https://registry.npmjs.org/bufferutil/-/bufferutil-4.1.0.tgz",
+@@ -8904,6 +9182,13 @@
+         "node": ">=6.14.2"
+       }
+     },
++    "node_modules/builtin-status-codes": {
++      "version": "3.0.0",
++      "resolved": "https://registry.npmjs.org/builtin-status-codes/-/builtin-status-codes-3.0.0.tgz",
++      "integrity": "sha512-HpGFw18DgFWlncDfjTa2rcQ4W88O1mC8e8yZ2AvQY5KDaktSTwo+KRf6nHK6FRI5FyRyb/5T6+TSxfP7QyGsmQ==",
++      "dev": true,
++      "license": "MIT"
++    },
+     "node_modules/call-bind": {
+       "version": "1.0.8",
+       "resolved": "https://registry.npmjs.org/call-bind/-/call-bind-1.0.8.tgz",
+@@ -9164,6 +9449,19 @@
+       "dev": true,
+       "license": "MIT"
+     },
++    "node_modules/console-browserify": {
++      "version": "1.2.0",
++      "resolved": "https://registry.npmjs.org/console-browserify/-/console-browserify-1.2.0.tgz",
++      "integrity": "sha512-ZMkYO/LkF17QvCPqM0gxw8yUzigAOZOSWSHg91FH6orS7vcEj5dVZTidN2fQ14yBSdg97RqhSNwLUXInd52OTA==",
++      "dev": true
++    },
++    "node_modules/constants-browserify": {
++      "version": "1.0.0",
++      "resolved": "https://registry.npmjs.org/constants-browserify/-/constants-browserify-1.0.0.tgz",
++      "integrity": "sha512-xFxOwqIzR/e1k1gLiWEophSCMqXcwVHIH7akf7b/vxcUeGunlj3hvZaaqxwHsTgn+IndtkQJgSztIDWeumWJDQ==",
++      "dev": true,
++      "license": "MIT"
++    },
+     "node_modules/convert-source-map": {
+       "version": "2.0.0",
+       "resolved": "https://registry.npmjs.org/convert-source-map/-/convert-source-map-2.0.0.tgz",
+@@ -9191,17 +9489,35 @@
+       "integrity": "sha512-ZQBvi1DcpJ4GDqanjucZ2Hj3wEO5pZDS89BWbkcrvdxksJorwUDDZamX9ldFkp9aw2lmBDLgkObEA4DWNJ9FYQ==",
+       "license": "MIT"
+     },
+-    "node_modules/create-hash": {
+-      "version": "1.2.0",
+-      "resolved": "https://registry.npmjs.org/create-hash/-/create-hash-1.2.0.tgz",
+-      "integrity": "sha512-z00bCGNHDG8mHAkP7CtT1qVu+bFQUPjYq/4Iv3C3kWjTFV10zIjfSoeqXo9Asws8gwSHDGj/hl2u4OGIjapeCg==",
++    "node_modules/create-ecdh": {
++      "version": "4.0.4",
++      "resolved": "https://registry.npmjs.org/create-ecdh/-/create-ecdh-4.0.4.tgz",
++      "integrity": "sha512-mf+TCx8wWc9VpuxfP2ht0iSISLZnt0JgWlrOKZiNqyUZWnjIaCIVNQArMHnCZKfEYRg6IM7A+NeJoN8gf/Ws0A==",
++      "dev": true,
+       "license": "MIT",
+       "dependencies": {
+-        "cipher-base": "^1.0.1",
+-        "inherits": "^2.0.1",
+-        "md5.js": "^1.3.4",
+-        "ripemd160": "^2.0.1",
+-        "sha.js": "^2.4.0"
++        "bn.js": "^4.1.0",
++        "elliptic": "^6.5.3"
++      }
++    },
++    "node_modules/create-ecdh/node_modules/bn.js": {
++      "version": "4.12.2",
++      "resolved": "https://registry.npmjs.org/bn.js/-/bn.js-4.12.2.tgz",
++      "integrity": "sha512-n4DSx829VRTRByMRGdjQ9iqsN0Bh4OolPsFnaZBLcbi8iXcB+kJ9s7EnRt4wILZNV3kPLHkRVfOc/HvhC3ovDw==",
++      "dev": true,
++      "license": "MIT"
++    },
++    "node_modules/create-hash": {
++      "version": "1.2.0",
++      "resolved": "https://registry.npmjs.org/create-hash/-/create-hash-1.2.0.tgz",
++      "integrity": "sha512-z00bCGNHDG8mHAkP7CtT1qVu+bFQUPjYq/4Iv3C3kWjTFV10zIjfSoeqXo9Asws8gwSHDGj/hl2u4OGIjapeCg==",
++      "license": "MIT",
++      "dependencies": {
++        "cipher-base": "^1.0.1",
++        "inherits": "^2.0.1",
++        "md5.js": "^1.3.4",
++        "ripemd160": "^2.0.1",
++        "sha.js": "^2.4.0"
+       }
+     },
+     "node_modules/create-hmac": {
+@@ -9218,6 +9534,13 @@
+         "sha.js": "^2.4.8"
+       }
+     },
++    "node_modules/create-require": {
++      "version": "1.1.1",
++      "resolved": "https://registry.npmjs.org/create-require/-/create-require-1.1.1.tgz",
++      "integrity": "sha512-dcKFX3jn0MpIaXjisoRvexIJVEKzaq7z2rZKxf+MSr9TkdmHmsU4m2lcLojrj/FHl8mk5VxMmYA+ftRkP/3oKQ==",
++      "dev": true,
++      "license": "MIT"
++    },
+     "node_modules/cross-fetch": {
+       "version": "3.2.0",
+       "resolved": "https://registry.npmjs.org/cross-fetch/-/cross-fetch-3.2.0.tgz",
+@@ -9242,6 +9565,47 @@
+         "node": ">= 8"
+       }
+     },
++    "node_modules/crypto-browserify": {
++      "version": "3.12.1",
++      "resolved": "https://registry.npmjs.org/crypto-browserify/-/crypto-browserify-3.12.1.tgz",
++      "integrity": "sha512-r4ESw/IlusD17lgQi1O20Fa3qNnsckR126TdUuBgAu7GBYSIPvdNyONd3Zrxh0xCwA4+6w/TDArBPsMvhur+KQ==",
++      "dev": true,
++      "license": "MIT",
++      "dependencies": {
++        "browserify-cipher": "^1.0.1",
++        "browserify-sign": "^4.2.3",
++        "create-ecdh": "^4.0.4",
++        "create-hash": "^1.2.0",
++        "create-hmac": "^1.1.7",
++        "diffie-hellman": "^5.0.3",
++        "hash-base": "~3.0.4",
++        "inherits": "^2.0.4",
++        "pbkdf2": "^3.1.2",
++        "public-encrypt": "^4.0.3",
++        "randombytes": "^2.1.0",
++        "randomfill": "^1.0.4"
++      },
++      "engines": {
++        "node": ">= 0.10"
++      },
++      "funding": {
++        "url": "https://github.com/sponsors/ljharb"
++      }
++    },
++    "node_modules/crypto-browserify/node_modules/hash-base": {
++      "version": "3.0.5",
++      "resolved": "https://registry.npmjs.org/hash-base/-/hash-base-3.0.5.tgz",
++      "integrity": "sha512-vXm0l45VbcHEVlTCzs8M+s0VeYsB2lnlAaThoLKGXr3bE/VWDOelNUnycUPEhKEaXARL2TEFjBOyUiM6+55KBg==",
++      "dev": true,
++      "license": "MIT",
++      "dependencies": {
++        "inherits": "^2.0.4",
++        "safe-buffer": "^5.2.1"
++      },
++      "engines": {
++        "node": ">= 0.10"
++      }
++    },
+     "node_modules/crypto-js": {
+       "version": "4.2.0",
+       "resolved": "https://registry.npmjs.org/crypto-js/-/crypto-js-4.2.0.tgz",
+@@ -9492,6 +9856,24 @@
+         "url": "https://github.com/sponsors/ljharb"
+       }
+     },
++    "node_modules/define-properties": {
++      "version": "1.2.1",
++      "resolved": "https://registry.npmjs.org/define-properties/-/define-properties-1.2.1.tgz",
++      "integrity": "sha512-8QmQKqEASLd5nx0U1B1okLElbUuuttJ/AnYmRXbbbGDWh6uS208EjD4Xqq/I9wK7u0v6O08XhTWnt5XtEbR6Dg==",
++      "dev": true,
++      "license": "MIT",
++      "dependencies": {
++        "define-data-property": "^1.0.1",
++        "has-property-descriptors": "^1.0.0",
++        "object-keys": "^1.1.1"
++      },
++      "engines": {
++        "node": ">= 0.4"
++      },
++      "funding": {
++        "url": "https://github.com/sponsors/ljharb"
++      }
++    },
+     "node_modules/delay": {
+       "version": "5.0.0",
+       "resolved": "https://registry.npmjs.org/delay/-/delay-5.0.0.tgz",
+@@ -9522,6 +9904,17 @@
+         "node": ">= 0.8"
+       }
+     },
++    "node_modules/des.js": {
++      "version": "1.1.0",
++      "resolved": "https://registry.npmjs.org/des.js/-/des.js-1.1.0.tgz",
++      "integrity": "sha512-r17GxjhUCjSRy8aiJpr8/UadFIzMzJGexI3Nmz4ADi9LYSFx4gTBp80+NaX/YsXWWLhpZ7v/v/ubEc/bCNfKwg==",
++      "dev": true,
++      "license": "MIT",
++      "dependencies": {
++        "inherits": "^2.0.1",
++        "minimalistic-assert": "^1.0.0"
++      }
++    },
+     "node_modules/detect-libc": {
+       "version": "2.1.2",
+       "resolved": "https://registry.npmjs.org/detect-libc/-/detect-libc-2.1.2.tgz",
+@@ -9538,6 +9931,25 @@
+       "integrity": "sha512-ypdmJU/TbBby2Dxibuv7ZLW3Bs1QEmM7nHjEANfohJLvE0XVujisn1qPJcZxg+qDucsr+bP6fLD1rPS3AhJ7EQ==",
+       "license": "MIT"
+     },
++    "node_modules/diffie-hellman": {
++      "version": "5.0.3",
++      "resolved": "https://registry.npmjs.org/diffie-hellman/-/diffie-hellman-5.0.3.tgz",
++      "integrity": "sha512-kqag/Nl+f3GwyK25fhUMYj81BUOrZ9IuJsjIcDE5icNM9FJHAVm3VcUDxdLPoQtTuUylWm6ZIknYJwwaPxsUzg==",
++      "dev": true,
++      "license": "MIT",
++      "dependencies": {
++        "bn.js": "^4.1.0",
++        "miller-rabin": "^4.0.0",
++        "randombytes": "^2.0.0"
++      }
++    },
++    "node_modules/diffie-hellman/node_modules/bn.js": {
++      "version": "4.12.2",
++      "resolved": "https://registry.npmjs.org/bn.js/-/bn.js-4.12.2.tgz",
++      "integrity": "sha512-n4DSx829VRTRByMRGdjQ9iqsN0Bh4OolPsFnaZBLcbi8iXcB+kJ9s7EnRt4wILZNV3kPLHkRVfOc/HvhC3ovDw==",
++      "dev": true,
++      "license": "MIT"
++    },
+     "node_modules/dijkstrajs": {
+       "version": "1.0.3",
+       "resolved": "https://registry.npmjs.org/dijkstrajs/-/dijkstrajs-1.0.3.tgz",
+@@ -9554,6 +9966,19 @@
+         "csstype": "^3.0.2"
+       }
+     },
++    "node_modules/domain-browser": {
++      "version": "4.22.0",
++      "resolved": "https://registry.npmjs.org/domain-browser/-/domain-browser-4.22.0.tgz",
++      "integrity": "sha512-IGBwjF7tNk3cwypFNH/7bfzBcgSCbaMOD3GsaY1AU/JRrnHnYgEM0+9kQt52iZxjNsjBtJYtao146V+f8jFZNw==",
++      "dev": true,
++      "license": "MIT",
++      "engines": {
++        "node": ">=10"
++      },
++      "funding": {
++        "url": "https://bevry.me/fund"
++      }
++    },
+     "node_modules/dotenv": {
+       "version": "10.0.0",
+       "resolved": "https://registry.npmjs.org/dotenv/-/dotenv-10.0.0.tgz",
+@@ -9653,12 +10078,6 @@
+         "node": ">=10.13.0"
+       }
+     },
+-    "node_modules/error-kid": {
+-      "version": "1.0.2",
+-      "resolved": "https://registry.npmjs.org/error-kid/-/error-kid-1.0.2.tgz",
+-      "integrity": "sha512-Xvq0ZrY/azCbREWKt9E/3mXDF0MkuEVVvHnOKutUhtq2O8pyneEixQ4nSFkA19Xfn+/OVSg//iVG0dxIDj7DIA==",
+-      "license": "MIT"
+-    },
+     "node_modules/es-define-property": {
+       "version": "1.0.1",
+       "resolved": "https://registry.npmjs.org/es-define-property/-/es-define-property-1.0.1.tgz",
+@@ -9951,6 +10370,13 @@
+         "node": ">=4.0"
+       }
+     },
++    "node_modules/estree-walker": {
++      "version": "2.0.2",
++      "resolved": "https://registry.npmjs.org/estree-walker/-/estree-walker-2.0.2.tgz",
++      "integrity": "sha512-Rfkk/Mp/DL7JVje3u18FxFujQlTNR2q6QfMSMB7AvCBx91NGj/ba3kCfza0f6dVDbw7YlRf/nDrn7pQrCCyQ/w==",
++      "dev": true,
++      "license": "MIT"
++    },
+     "node_modules/esutils": {
+       "version": "2.0.3",
+       "resolved": "https://registry.npmjs.org/esutils/-/esutils-2.0.3.tgz",
+@@ -10045,6 +10471,27 @@
+       "integrity": "sha512-8guHBZCwKnFhYdHr2ysuRWErTwhoN2X8XELRlrRwpmfeY2jjuUN4taQMsULKUVo1K4DvZl+0pgfyoysHxvmvEw==",
+       "license": "MIT"
+     },
++    "node_modules/events": {
++      "version": "3.3.0",
++      "resolved": "https://registry.npmjs.org/events/-/events-3.3.0.tgz",
++      "integrity": "sha512-mQw+2fkQbALzQ7V0MY0IqdnXNOeTtP4r0lN9z7AAawCXgqea7bDii20AYrIBrFd/Hx0M2Ocz6S111CaFkUcb0Q==",
++      "dev": true,
++      "license": "MIT",
++      "engines": {
++        "node": ">=0.8.x"
++      }
++    },
++    "node_modules/evp_bytestokey": {
++      "version": "1.0.3",
++      "resolved": "https://registry.npmjs.org/evp_bytestokey/-/evp_bytestokey-1.0.3.tgz",
++      "integrity": "sha512-/f2Go4TognH/KvCISP7OUsHn85hT9nUkxxA9BEWxFn+Oj9o8ZNLm/40hdlgSLyuOimsrTKLUMEorQexp/aPQeA==",
++      "dev": true,
++      "license": "MIT",
++      "dependencies": {
++        "md5.js": "^1.3.4",
++        "safe-buffer": "^5.1.1"
++      }
++    },
+     "node_modules/exponential-backoff": {
+       "version": "3.1.3",
+       "resolved": "https://registry.npmjs.org/exponential-backoff/-/exponential-backoff-3.1.3.tgz",
+@@ -10244,11 +10691,32 @@
+         "node": ">= 6"
+       }
+     },
+-    "node_modules/fp-ts": {
+-      "version": "2.16.11",
+-      "resolved": "https://registry.npmjs.org/fp-ts/-/fp-ts-2.16.11.tgz",
+-      "integrity": "sha512-LaI+KaX2NFkfn1ZGHoKCmcfv7yrZsC3b8NtWsTVQeHkq4F27vI5igUuO53sxqDEa2gNQMHFPmpojDw/1zmUK7w==",
+-      "license": "MIT"
++    "node_modules/framer-motion": {
++      "version": "12.34.0",
++      "resolved": "https://registry.npmjs.org/framer-motion/-/framer-motion-12.34.0.tgz",
++      "integrity": "sha512-+/H49owhzkzQyxtn7nZeF4kdH++I2FWrESQ184Zbcw5cEqNHYkE5yxWxcTLSj5lNx3NWdbIRy5FHqUvetD8FWg==",
++      "license": "MIT",
++      "dependencies": {
++        "motion-dom": "^12.34.0",
++        "motion-utils": "^12.29.2",
++        "tslib": "^2.4.0"
++      },
++      "peerDependencies": {
++        "@emotion/is-prop-valid": "*",
++        "react": "^18.0.0 || ^19.0.0",
++        "react-dom": "^18.0.0 || ^19.0.0"
++      },
++      "peerDependenciesMeta": {
++        "@emotion/is-prop-valid": {
++          "optional": true
++        },
++        "react": {
++          "optional": true
++        },
++        "react-dom": {
++          "optional": true
++        }
++      }
+     },
+     "node_modules/fsevents": {
+       "version": "2.3.3",
+@@ -10274,6 +10742,16 @@
+         "url": "https://github.com/sponsors/ljharb"
+       }
+     },
++    "node_modules/generator-function": {
++      "version": "2.0.1",
++      "resolved": "https://registry.npmjs.org/generator-function/-/generator-function-2.0.1.tgz",
++      "integrity": "sha512-SFdFmIJi+ybC0vjlHN0ZGVGHc3lgE0DxPAT0djjVg+kjOnSqclqmj0KQ7ykTOLP6YxoqOvuAODGdcHJn+43q3g==",
++      "dev": true,
++      "license": "MIT",
++      "engines": {
++        "node": ">= 0.4"
++      }
++    },
+     "node_modules/gensync": {
+       "version": "1.0.0-beta.2",
+       "resolved": "https://registry.npmjs.org/gensync/-/gensync-1.0.0-beta.2.tgz",
+@@ -10553,6 +11031,13 @@
+         "node": ">= 0.6"
+       }
+     },
++    "node_modules/https-browserify": {
++      "version": "1.0.0",
++      "resolved": "https://registry.npmjs.org/https-browserify/-/https-browserify-1.0.0.tgz",
++      "integrity": "sha512-J+FkSdyD+0mA0N+81tMotaRMfSL9SGi+xpD3T6YApKsc3bGSXJlfXri3VyFOeYkfLRQisDk1W+jIFFKBeUBbBg==",
++      "dev": true,
++      "license": "MIT"
++    },
+     "node_modules/humanize-ms": {
+       "version": "1.2.1",
+       "resolved": "https://registry.npmjs.org/humanize-ms/-/humanize-ms-1.2.1.tgz",
+@@ -10686,6 +11171,23 @@
+         "node": ">=12"
+       }
+     },
++    "node_modules/is-arguments": {
++      "version": "1.2.0",
++      "resolved": "https://registry.npmjs.org/is-arguments/-/is-arguments-1.2.0.tgz",
++      "integrity": "sha512-7bVbi0huj/wrIAOzb8U1aszg9kdi3KN/CyU19CTI7tAoZYEZoL9yCDXpbXN+uPsuWnP02cyug1gleqq+TU+YCA==",
++      "dev": true,
++      "license": "MIT",
++      "dependencies": {
++        "call-bound": "^1.0.2",
++        "has-tostringtag": "^1.0.2"
++      },
++      "engines": {
++        "node": ">= 0.4"
++      },
++      "funding": {
++        "url": "https://github.com/sponsors/ljharb"
++      }
++    },
+     "node_modules/is-callable": {
+       "version": "1.2.7",
+       "resolved": "https://registry.npmjs.org/is-callable/-/is-callable-1.2.7.tgz",
+@@ -10733,6 +11235,26 @@
+         "node": ">=8"
+       }
+     },
++    "node_modules/is-generator-function": {
++      "version": "1.1.2",
++      "resolved": "https://registry.npmjs.org/is-generator-function/-/is-generator-function-1.1.2.tgz",
++      "integrity": "sha512-upqt1SkGkODW9tsGNG5mtXTXtECizwtS2kA161M+gJPc1xdb/Ax629af6YrTwcOeQHbewrPNlE5Dx7kzvXTizA==",
++      "dev": true,
++      "license": "MIT",
++      "dependencies": {
++        "call-bound": "^1.0.4",
++        "generator-function": "^2.0.0",
++        "get-proto": "^1.0.1",
++        "has-tostringtag": "^1.0.2",
++        "safe-regex-test": "^1.1.0"
++      },
++      "engines": {
++        "node": ">= 0.4"
++      },
++      "funding": {
++        "url": "https://github.com/sponsors/ljharb"
++      }
++    },
+     "node_modules/is-glob": {
+       "version": "4.0.3",
+       "resolved": "https://registry.npmjs.org/is-glob/-/is-glob-4.0.3.tgz",
+@@ -10765,6 +11287,23 @@
+         "node": ">=8"
+       }
+     },
++    "node_modules/is-nan": {
++      "version": "1.3.2",
++      "resolved": "https://registry.npmjs.org/is-nan/-/is-nan-1.3.2.tgz",
++      "integrity": "sha512-E+zBKpQ2t6MEo1VsonYmluk9NxGrbzpeeLC2xIViuO2EjU2xsXsBPwTr3Ykv9l08UYEVEdWeRZNouaZqF6RN0w==",
++      "dev": true,
++      "license": "MIT",
++      "dependencies": {
++        "call-bind": "^1.0.0",
++        "define-properties": "^1.1.3"
++      },
++      "engines": {
++        "node": ">= 0.4"
++      },
++      "funding": {
++        "url": "https://github.com/sponsors/ljharb"
++      }
++    },
+     "node_modules/is-plain-obj": {
+       "version": "2.1.0",
+       "resolved": "https://registry.npmjs.org/is-plain-obj/-/is-plain-obj-2.1.0.tgz",
+@@ -10775,6 +11314,25 @@
+         "node": ">=8"
+       }
+     },
++    "node_modules/is-regex": {
++      "version": "1.2.1",
++      "resolved": "https://registry.npmjs.org/is-regex/-/is-regex-1.2.1.tgz",
++      "integrity": "sha512-MjYsKHO5O7mCsmRGxWcLWheFqN9DJ/2TmngvjKXihe6efViPqc274+Fx/4fYj/r03+ESvBdTXK0V6tA3rgez1g==",
++      "dev": true,
++      "license": "MIT",
++      "dependencies": {
++        "call-bound": "^1.0.2",
++        "gopd": "^1.2.0",
++        "has-tostringtag": "^1.0.2",
++        "hasown": "^2.0.2"
++      },
++      "engines": {
++        "node": ">= 0.4"
++      },
++      "funding": {
++        "url": "https://github.com/sponsors/ljharb"
++      }
++    },
+     "node_modules/is-typed-array": {
+       "version": "1.1.15",
+       "resolved": "https://registry.npmjs.org/is-typed-array/-/is-typed-array-1.1.15.tgz",
+@@ -10815,6 +11373,16 @@
+       "dev": true,
+       "license": "ISC"
+     },
++    "node_modules/isomorphic-timers-promises": {
++      "version": "1.0.1",
++      "resolved": "https://registry.npmjs.org/isomorphic-timers-promises/-/isomorphic-timers-promises-1.0.1.tgz",
++      "integrity": "sha512-u4sej9B1LPSxTGKB/HiuzvEQnXH0ECYkSVQU39koSwmFAxhlEAFl9RdTvLv4TOTQUgBS5O3O5fwUxk6byBZ+IQ==",
++      "dev": true,
++      "license": "MIT",
++      "engines": {
++        "node": ">=10"
++      }
++    },
+     "node_modules/isomorphic-ws": {
+       "version": "4.0.1",
+       "resolved": "https://registry.npmjs.org/isomorphic-ws/-/isomorphic-ws-4.0.1.tgz",
+@@ -11487,6 +12055,27 @@
+       "integrity": "sha512-/0LLxhzP0tfiR5hcQebtudP56gUurs2CLkGarnCiB/OqEyUFQ6U3paQi/tgLv0hBJYt2rnr9MNpxz4fiiugstg==",
+       "license": "MIT"
+     },
++    "node_modules/miller-rabin": {
++      "version": "4.0.1",
++      "resolved": "https://registry.npmjs.org/miller-rabin/-/miller-rabin-4.0.1.tgz",
++      "integrity": "sha512-115fLhvZVqWwHPbClyntxEVfVDfl9DLLTuJvq3g2O/Oxi8AiNouAHvDSzHS0viUJc+V5vm3eq91Xwqn9dp4jRA==",
++      "dev": true,
++      "license": "MIT",
++      "dependencies": {
++        "bn.js": "^4.0.0",
++        "brorand": "^1.0.1"
++      },
++      "bin": {
++        "miller-rabin": "bin/miller-rabin"
++      }
++    },
++    "node_modules/miller-rabin/node_modules/bn.js": {
++      "version": "4.12.2",
++      "resolved": "https://registry.npmjs.org/bn.js/-/bn.js-4.12.2.tgz",
++      "integrity": "sha512-n4DSx829VRTRByMRGdjQ9iqsN0Bh4OolPsFnaZBLcbi8iXcB+kJ9s7EnRt4wILZNV3kPLHkRVfOc/HvhC3ovDw==",
++      "dev": true,
++      "license": "MIT"
++    },
+     "node_modules/mime": {
+       "version": "3.0.0",
+       "resolved": "https://registry.npmjs.org/mime/-/mime-3.0.0.tgz",
+@@ -11569,6 +12158,21 @@
+         "node": ">= 8.0.0"
+       }
+     },
++    "node_modules/motion-dom": {
++      "version": "12.34.0",
++      "resolved": "https://registry.npmjs.org/motion-dom/-/motion-dom-12.34.0.tgz",
++      "integrity": "sha512-Lql3NuEcScRDxTAO6GgUsRHBZOWI/3fnMlkMcH5NftzcN37zJta+bpbMAV9px4Nj057TuvRooMK7QrzMCgtz6Q==",
++      "license": "MIT",
++      "dependencies": {
++        "motion-utils": "^12.29.2"
++      }
++    },
++    "node_modules/motion-utils": {
++      "version": "12.29.2",
++      "resolved": "https://registry.npmjs.org/motion-utils/-/motion-utils-12.29.2.tgz",
++      "integrity": "sha512-G3kc34H2cX2gI63RqU+cZq+zWRRPSsNIOjpdl9TN4AQwC4sgwYPl/Q/Obf/d53nOm569T0fYK+tcoSV50BWx8A==",
++      "license": "MIT"
++    },
+     "node_modules/ms": {
+       "version": "2.1.3",
+       "resolved": "https://registry.npmjs.org/ms/-/ms-2.1.3.tgz",
+@@ -11736,6 +12340,77 @@
+       "dev": true,
+       "license": "MIT"
+     },
++    "node_modules/node-stdlib-browser": {
++      "version": "1.3.1",
++      "resolved": "https://registry.npmjs.org/node-stdlib-browser/-/node-stdlib-browser-1.3.1.tgz",
++      "integrity": "sha512-X75ZN8DCLftGM5iKwoYLA3rjnrAEs97MkzvSd4q2746Tgpg8b8XWiBGiBG4ZpgcAqBgtgPHTiAc8ZMCvZuikDw==",
++      "dev": true,
++      "license": "MIT",
++      "dependencies": {
++        "assert": "^2.0.0",
++        "browser-resolve": "^2.0.0",
++        "browserify-zlib": "^0.2.0",
++        "buffer": "^5.7.1",
++        "console-browserify": "^1.1.0",
++        "constants-browserify": "^1.0.0",
++        "create-require": "^1.1.1",
++        "crypto-browserify": "^3.12.1",
++        "domain-browser": "4.22.0",
++        "events": "^3.0.0",
++        "https-browserify": "^1.0.0",
++        "isomorphic-timers-promises": "^1.0.1",
++        "os-browserify": "^0.3.0",
++        "path-browserify": "^1.0.1",
++        "pkg-dir": "^5.0.0",
++        "process": "^0.11.10",
++        "punycode": "^1.4.1",
++        "querystring-es3": "^0.2.1",
++        "readable-stream": "^3.6.0",
++        "stream-browserify": "^3.0.0",
++        "stream-http": "^3.2.0",
++        "string_decoder": "^1.0.0",
++        "timers-browserify": "^2.0.4",
++        "tty-browserify": "0.0.1",
++        "url": "^0.11.4",
++        "util": "^0.12.4",
++        "vm-browserify": "^1.0.1"
++      },
++      "engines": {
++        "node": ">=10"
++      }
++    },
++    "node_modules/node-stdlib-browser/node_modules/buffer": {
++      "version": "5.7.1",
++      "resolved": "https://registry.npmjs.org/buffer/-/buffer-5.7.1.tgz",
++      "integrity": "sha512-EHcyIPBQ4BSGlvjB16k5KgAJ27CIsHY/2JBmCRReo48y9rQ3MaUzWX3KVlBa4U7MyX02HdVj0K7C3WaB3ju7FQ==",
++      "dev": true,
++      "funding": [
++        {
++          "type": "github",
++          "url": "https://github.com/sponsors/feross"
++        },
++        {
++          "type": "patreon",
++          "url": "https://www.patreon.com/feross"
++        },
++        {
++          "type": "consulting",
++          "url": "https://feross.org/support"
++        }
++      ],
++      "license": "MIT",
++      "dependencies": {
++        "base64-js": "^1.3.1",
++        "ieee754": "^1.1.13"
++      }
++    },
++    "node_modules/node-stdlib-browser/node_modules/punycode": {
++      "version": "1.4.1",
++      "resolved": "https://registry.npmjs.org/punycode/-/punycode-1.4.1.tgz",
++      "integrity": "sha512-jmYNElW7yvO7TV33CjSmvSiE2yco3bV2czu/OzDKdMNVZQWfxCblURLhf+47syQRBntjfLdd/H0egrzIG+oaFQ==",
++      "dev": true,
++      "license": "MIT"
++    },
+     "node_modules/number-to-bn": {
+       "version": "1.7.0",
+       "resolved": "https://registry.npmjs.org/number-to-bn/-/number-to-bn-1.7.0.tgz",
+@@ -11765,6 +12440,67 @@
+         "node": ">=0.10.0"
+       }
+     },
++    "node_modules/object-inspect": {
++      "version": "1.13.4",
++      "resolved": "https://registry.npmjs.org/object-inspect/-/object-inspect-1.13.4.tgz",
++      "integrity": "sha512-W67iLl4J2EXEGTbfeHCffrjDfitvLANg0UlX3wFUUSTx92KXRFegMHUVgSqE+wvhAbi4WqjGg9czysTV2Epbew==",
++      "dev": true,
++      "license": "MIT",
++      "engines": {
++        "node": ">= 0.4"
++      },
++      "funding": {
++        "url": "https://github.com/sponsors/ljharb"
++      }
++    },
++    "node_modules/object-is": {
++      "version": "1.1.6",
++      "resolved": "https://registry.npmjs.org/object-is/-/object-is-1.1.6.tgz",
++      "integrity": "sha512-F8cZ+KfGlSGi09lJT7/Nd6KJZ9ygtvYC0/UYYLI9nmQKLMnydpB9yvbv9K1uSkEu7FU9vYPmVwLg328tX+ot3Q==",
++      "dev": true,
++      "license": "MIT",
++      "dependencies": {
++        "call-bind": "^1.0.7",
++        "define-properties": "^1.2.1"
++      },
++      "engines": {
++        "node": ">= 0.4"
++      },
++      "funding": {
++        "url": "https://github.com/sponsors/ljharb"
++      }
++    },
++    "node_modules/object-keys": {
++      "version": "1.1.1",
++      "resolved": "https://registry.npmjs.org/object-keys/-/object-keys-1.1.1.tgz",
++      "integrity": "sha512-NuAESUOUMrlIXOfHKzD6bpPu3tYt3xvjNdRIQ+FeT0lNb4K8WR70CaDxhuNguS2XG+GjkyMwOzsN5ZktImfhLA==",
++      "dev": true,
++      "license": "MIT",
++      "engines": {
++        "node": ">= 0.4"
++      }
++    },
++    "node_modules/object.assign": {
++      "version": "4.1.7",
++      "resolved": "https://registry.npmjs.org/object.assign/-/object.assign-4.1.7.tgz",
++      "integrity": "sha512-nK28WOo+QIjBkDduTINE4JkF/UJJKyf2EJxvJKfblDpyg0Q+pkOHNTL0Qwy6NP6FhE/EnzV73BxxqcJaXY9anw==",
++      "dev": true,
++      "license": "MIT",
++      "dependencies": {
++        "call-bind": "^1.0.8",
++        "call-bound": "^1.0.3",
++        "define-properties": "^1.2.1",
++        "es-object-atoms": "^1.0.0",
++        "has-symbols": "^1.1.0",
++        "object-keys": "^1.1.1"
++      },
++      "engines": {
++        "node": ">= 0.4"
++      },
++      "funding": {
++        "url": "https://github.com/sponsors/ljharb"
++      }
++    },
+     "node_modules/once": {
+       "version": "1.4.0",
+       "resolved": "https://registry.npmjs.org/once/-/once-1.4.0.tgz",
+@@ -11831,6 +12567,13 @@
+         "url": "https://github.com/sponsors/sindresorhus"
+       }
+     },
++    "node_modules/os-browserify": {
++      "version": "0.3.0",
++      "resolved": "https://registry.npmjs.org/os-browserify/-/os-browserify-0.3.0.tgz",
++      "integrity": "sha512-gjcpUc3clBf9+210TRaDWbf+rZZZEshZ+DlXMRCeAjp0xhTrnQsKHypIy1J3d5hKdUzj69t708EHtU8P6bUn0A==",
++      "dev": true,
++      "license": "MIT"
++    },
+     "node_modules/p-limit": {
+       "version": "3.1.0",
+       "resolved": "https://registry.npmjs.org/p-limit/-/p-limit-3.1.0.tgz",
+@@ -11872,6 +12615,13 @@
+         "node": ">=6"
+       }
+     },
++    "node_modules/pako": {
++      "version": "1.0.11",
++      "resolved": "https://registry.npmjs.org/pako/-/pako-1.0.11.tgz",
++      "integrity": "sha512-4hLB8Py4zZce5s4yd9XzopqwVv/yGNhV1Bl8NTmCq1763HeK2+EwVTv+leGeL13Dnh2wfbqowVPXCIO0z4taYw==",
++      "dev": true,
++      "license": "(MIT AND Zlib)"
++    },
+     "node_modules/parent-module": {
+       "version": "1.0.1",
+       "resolved": "https://registry.npmjs.org/parent-module/-/parent-module-1.0.1.tgz",
+@@ -11885,6 +12635,49 @@
+         "node": ">=6"
+       }
+     },
++    "node_modules/parse-asn1": {
++      "version": "5.1.9",
++      "resolved": "https://registry.npmjs.org/parse-asn1/-/parse-asn1-5.1.9.tgz",
++      "integrity": "sha512-fIYNuZ/HastSb80baGOuPRo1O9cf4baWw5WsAp7dBuUzeTD/BoaG8sVTdlPFksBE2lF21dN+A1AnrpIjSWqHHg==",
++      "dev": true,
++      "license": "ISC",
++      "dependencies": {
++        "asn1.js": "^4.10.1",
++        "browserify-aes": "^1.2.0",
++        "evp_bytestokey": "^1.0.3",
++        "pbkdf2": "^3.1.5",
++        "safe-buffer": "^5.2.1"
++      },
++      "engines": {
++        "node": ">= 0.10"
++      }
++    },
++    "node_modules/parse-asn1/node_modules/asn1.js": {
++      "version": "4.10.1",
++      "resolved": "https://registry.npmjs.org/asn1.js/-/asn1.js-4.10.1.tgz",
++      "integrity": "sha512-p32cOF5q0Zqs9uBiONKYLm6BClCoBCM5O9JfeUSlnQLBTxYdTK+pW+nXflm8UkKd2UYlEbYz5qEi0JuZR9ckSw==",
++      "dev": true,
++      "license": "MIT",
++      "dependencies": {
++        "bn.js": "^4.0.0",
++        "inherits": "^2.0.1",
++        "minimalistic-assert": "^1.0.0"
++      }
++    },
++    "node_modules/parse-asn1/node_modules/bn.js": {
++      "version": "4.12.2",
++      "resolved": "https://registry.npmjs.org/bn.js/-/bn.js-4.12.2.tgz",
++      "integrity": "sha512-n4DSx829VRTRByMRGdjQ9iqsN0Bh4OolPsFnaZBLcbi8iXcB+kJ9s7EnRt4wILZNV3kPLHkRVfOc/HvhC3ovDw==",
++      "dev": true,
++      "license": "MIT"
++    },
++    "node_modules/path-browserify": {
++      "version": "1.0.1",
++      "resolved": "https://registry.npmjs.org/path-browserify/-/path-browserify-1.0.1.tgz",
++      "integrity": "sha512-b7uo2UCUOYZcnF/3ID0lulOJi/bafxa1xPe7ZPsammBSpjSWQkjNxlt635YGS2MiR9GjvuXCtz2emr3jbsz98g==",
++      "dev": true,
++      "license": "MIT"
++    },
+     "node_modules/path-exists": {
+       "version": "4.0.0",
+       "resolved": "https://registry.npmjs.org/path-exists/-/path-exists-4.0.0.tgz",
+@@ -11948,6 +12741,19 @@
+         "url": "https://github.com/sponsors/jonschlinkert"
+       }
+     },
++    "node_modules/pkg-dir": {
++      "version": "5.0.0",
++      "resolved": "https://registry.npmjs.org/pkg-dir/-/pkg-dir-5.0.0.tgz",
++      "integrity": "sha512-NPE8TDbzl/3YQYY7CSS228s3g2ollTFnc+Qi3tqmqJp9Vg2ovUpixcJEo2HJScN2Ez+kEaal6y70c0ehqJBJeA==",
++      "dev": true,
++      "license": "MIT",
++      "dependencies": {
++        "find-up": "^5.0.0"
++      },
++      "engines": {
++        "node": ">=10"
++      }
++    },
+     "node_modules/pngjs": {
+       "version": "5.0.0",
+       "resolved": "https://registry.npmjs.org/pngjs/-/pngjs-5.0.0.tgz",
+@@ -12005,6 +12811,16 @@
+         "node": ">= 0.8.0"
+       }
+     },
++    "node_modules/process": {
++      "version": "0.11.10",
++      "resolved": "https://registry.npmjs.org/process/-/process-0.11.10.tgz",
++      "integrity": "sha512-cdGef/drWFoydD1JsMzuFf8100nZl+GT+yacc2bEced5f9Rjk4z+WtFUTBu9PhOi9j/jfmBPu0mMEY4wIdAF8A==",
++      "dev": true,
++      "license": "MIT",
++      "engines": {
++        "node": ">= 0.6.0"
++      }
++    },
+     "node_modules/process-nextick-args": {
+       "version": "2.0.1",
+       "resolved": "https://registry.npmjs.org/process-nextick-args/-/process-nextick-args-2.0.1.tgz",
+@@ -12034,6 +12850,28 @@
+       "integrity": "sha512-D+zkORCbA9f1tdWRK0RaCR3GPv50cMxcrz4X8k5LTSUD1Dkw47mKJEZQNunItRTkWwgtaUSo1RVFRIG9ZXiFYg==",
+       "license": "MIT"
+     },
++    "node_modules/public-encrypt": {
++      "version": "4.0.3",
++      "resolved": "https://registry.npmjs.org/public-encrypt/-/public-encrypt-4.0.3.tgz",
++      "integrity": "sha512-zVpa8oKZSz5bTMTFClc1fQOnyyEzpl5ozpi1B5YcvBrdohMjH2rfsBtyXcuNuwjsDIXmBYlF2N5FlJYhR29t8Q==",
++      "dev": true,
++      "license": "MIT",
++      "dependencies": {
++        "bn.js": "^4.1.0",
++        "browserify-rsa": "^4.0.0",
++        "create-hash": "^1.1.0",
++        "parse-asn1": "^5.0.0",
++        "randombytes": "^2.0.1",
++        "safe-buffer": "^5.1.2"
++      }
++    },
++    "node_modules/public-encrypt/node_modules/bn.js": {
++      "version": "4.12.2",
++      "resolved": "https://registry.npmjs.org/bn.js/-/bn.js-4.12.2.tgz",
++      "integrity": "sha512-n4DSx829VRTRByMRGdjQ9iqsN0Bh4OolPsFnaZBLcbi8iXcB+kJ9s7EnRt4wILZNV3kPLHkRVfOc/HvhC3ovDw==",
++      "dev": true,
++      "license": "MIT"
++    },
+     "node_modules/punycode": {
+       "version": "2.3.1",
+       "resolved": "https://registry.npmjs.org/punycode/-/punycode-2.3.1.tgz",
+@@ -12076,6 +12914,31 @@
+         "react": "^16.8.0 || ^17.0.0 || ^18.0.0 || ^19.0.0"
+       }
+     },
++    "node_modules/qs": {
++      "version": "6.15.0",
++      "resolved": "https://registry.npmjs.org/qs/-/qs-6.15.0.tgz",
++      "integrity": "sha512-mAZTtNCeetKMH+pSjrb76NAM8V9a05I9aBZOHztWy/UqcJdQYNsf59vrRKWnojAT9Y+GbIvoTBC++CPHqpDBhQ==",
++      "dev": true,
++      "license": "BSD-3-Clause",
++      "dependencies": {
++        "side-channel": "^1.1.0"
++      },
++      "engines": {
++        "node": ">=0.6"
++      },
++      "funding": {
++        "url": "https://github.com/sponsors/ljharb"
++      }
++    },
++    "node_modules/querystring-es3": {
++      "version": "0.2.1",
++      "resolved": "https://registry.npmjs.org/querystring-es3/-/querystring-es3-0.2.1.tgz",
++      "integrity": "sha512-773xhDQnZBMFobEiztv8LIl70ch5MSF/jUQVlhwFyBILqq96anmoctVIYz+ZRp0qbCKATTn6ev02M3r7Ga5vqA==",
++      "dev": true,
++      "engines": {
++        "node": ">=0.4.x"
++      }
++    },
+     "node_modules/randombytes": {
+       "version": "2.1.0",
+       "resolved": "https://registry.npmjs.org/randombytes/-/randombytes-2.1.0.tgz",
+@@ -12085,6 +12948,17 @@
+         "safe-buffer": "^5.1.0"
+       }
+     },
++    "node_modules/randomfill": {
++      "version": "1.0.4",
++      "resolved": "https://registry.npmjs.org/randomfill/-/randomfill-1.0.4.tgz",
++      "integrity": "sha512-87lcbR8+MhcWcUiQ+9e+Rwx8MyR2P7qnt15ynUlbm3TU/fjbgz4GsvfSUDTemtCCtVCqb4ZcEFlyPNTh9bBTLw==",
++      "dev": true,
++      "license": "MIT",
++      "dependencies": {
++        "randombytes": "^2.0.5",
++        "safe-buffer": "^5.1.0"
++      }
++    },
+     "node_modules/react": {
+       "version": "19.2.3",
+       "resolved": "https://registry.npmjs.org/react/-/react-19.2.3.tgz",
+@@ -12599,6 +13473,24 @@
+       ],
+       "license": "MIT"
+     },
++    "node_modules/safe-regex-test": {
++      "version": "1.1.0",
++      "resolved": "https://registry.npmjs.org/safe-regex-test/-/safe-regex-test-1.1.0.tgz",
++      "integrity": "sha512-x/+Cz4YrimQxQccJf5mKEbIa1NzeCRNI5Ecl/ekmlYaampdNLPalVyIcCZNNH3MvmqBugV5TMYZXv0ljslUlaw==",
++      "dev": true,
++      "license": "MIT",
++      "dependencies": {
++        "call-bound": "^1.0.2",
++        "es-errors": "^1.3.0",
++        "is-regex": "^1.2.1"
++      },
++      "engines": {
++        "node": ">= 0.4"
++      },
++      "funding": {
++        "url": "https://github.com/sponsors/ljharb"
++      }
++    },
+     "node_modules/safer-buffer": {
+       "version": "2.1.2",
+       "resolved": "https://registry.npmjs.org/safer-buffer/-/safer-buffer-2.1.2.tgz",
+@@ -12671,6 +13563,13 @@
+         "node": ">= 0.4"
+       }
+     },
++    "node_modules/setimmediate": {
++      "version": "1.0.5",
++      "resolved": "https://registry.npmjs.org/setimmediate/-/setimmediate-1.0.5.tgz",
++      "integrity": "sha512-MATJdZp8sLqDl/68LfQmbP8zKPLQNV6BIZoIgrscFDQ+RsvK/BxeDQOgyxKKoh0y/8h3BqVFnCqQ/gd+reiIXA==",
++      "dev": true,
++      "license": "MIT"
++    },
+     "node_modules/setprototypeof": {
+       "version": "1.2.0",
+       "resolved": "https://registry.npmjs.org/setprototypeof/-/setprototypeof-1.2.0.tgz",
+@@ -12720,6 +13619,82 @@
+         "node": ">=8"
+       }
+     },
++    "node_modules/side-channel": {
++      "version": "1.1.0",
++      "resolved": "https://registry.npmjs.org/side-channel/-/side-channel-1.1.0.tgz",
++      "integrity": "sha512-ZX99e6tRweoUXqR+VBrslhda51Nh5MTQwou5tnUDgbtyM0dBgmhEDtWGP/xbKn6hqfPRHujUNwz5fy/wbbhnpw==",
++      "dev": true,
++      "license": "MIT",
++      "dependencies": {
++        "es-errors": "^1.3.0",
++        "object-inspect": "^1.13.3",
++        "side-channel-list": "^1.0.0",
++        "side-channel-map": "^1.0.1",
++        "side-channel-weakmap": "^1.0.2"
++      },
++      "engines": {
++        "node": ">= 0.4"
++      },
++      "funding": {
++        "url": "https://github.com/sponsors/ljharb"
++      }
++    },
++    "node_modules/side-channel-list": {
++      "version": "1.0.0",
++      "resolved": "https://registry.npmjs.org/side-channel-list/-/side-channel-list-1.0.0.tgz",
++      "integrity": "sha512-FCLHtRD/gnpCiCHEiJLOwdmFP+wzCmDEkc9y7NsYxeF4u7Btsn1ZuwgwJGxImImHicJArLP4R0yX4c2KCrMrTA==",
++      "dev": true,
++      "license": "MIT",
++      "dependencies": {
++        "es-errors": "^1.3.0",
++        "object-inspect": "^1.13.3"
++      },
++      "engines": {
++        "node": ">= 0.4"
++      },
++      "funding": {
++        "url": "https://github.com/sponsors/ljharb"
++      }
++    },
++    "node_modules/side-channel-map": {
++      "version": "1.0.1",
++      "resolved": "https://registry.npmjs.org/side-channel-map/-/side-channel-map-1.0.1.tgz",
++      "integrity": "sha512-VCjCNfgMsby3tTdo02nbjtM/ewra6jPHmpThenkTYh8pG9ucZ/1P8So4u4FGBek/BjpOVsDCMoLA/iuBKIFXRA==",
++      "dev": true,
++      "license": "MIT",
++      "dependencies": {
++        "call-bound": "^1.0.2",
++        "es-errors": "^1.3.0",
++        "get-intrinsic": "^1.2.5",
++        "object-inspect": "^1.13.3"
++      },
++      "engines": {
++        "node": ">= 0.4"
++      },
++      "funding": {
++        "url": "https://github.com/sponsors/ljharb"
++      }
++    },
++    "node_modules/side-channel-weakmap": {
++      "version": "1.0.2",
++      "resolved": "https://registry.npmjs.org/side-channel-weakmap/-/side-channel-weakmap-1.0.2.tgz",
++      "integrity": "sha512-WPS/HvHQTYnHisLo9McqBHOJk2FkHO/tlpvldyrnem4aeQp4hai3gythswg6p01oSoTl58rcpiFAjF2br2Ak2A==",
++      "dev": true,
++      "license": "MIT",
++      "dependencies": {
++        "call-bound": "^1.0.2",
++        "es-errors": "^1.3.0",
++        "get-intrinsic": "^1.2.5",
++        "object-inspect": "^1.13.3",
++        "side-channel-map": "^1.0.1"
++      },
++      "engines": {
++        "node": ">= 0.4"
++      },
++      "funding": {
++        "url": "https://github.com/sponsors/ljharb"
++      }
++    },
+     "node_modules/signal-exit": {
+       "version": "3.0.7",
+       "resolved": "https://registry.npmjs.org/signal-exit/-/signal-exit-3.0.7.tgz",
+@@ -12755,12 +13730,36 @@
+         "node": ">= 0.6"
+       }
+     },
++    "node_modules/stream-browserify": {
++      "version": "3.0.0",
++      "resolved": "https://registry.npmjs.org/stream-browserify/-/stream-browserify-3.0.0.tgz",
++      "integrity": "sha512-H73RAHsVBapbim0tU2JwwOiXUj+fikfiaoYAKHF3VJfA0pe2BCzkhAHBlLG6REzE+2WNZcxOXjK7lkso+9euLA==",
++      "dev": true,
++      "license": "MIT",
++      "dependencies": {
++        "inherits": "~2.0.4",
++        "readable-stream": "^3.5.0"
++      }
++    },
+     "node_modules/stream-chain": {
+       "version": "2.2.5",
+       "resolved": "https://registry.npmjs.org/stream-chain/-/stream-chain-2.2.5.tgz",
+       "integrity": "sha512-1TJmBx6aSWqZ4tx7aTpBDXK0/e2hhcNSTV8+CbFJtDjbb+I1mZ8lHit0Grw9GRT+6JbIrrDd8esncgBi8aBXGA==",
+       "license": "BSD-3-Clause"
+     },
++    "node_modules/stream-http": {
++      "version": "3.2.0",
++      "resolved": "https://registry.npmjs.org/stream-http/-/stream-http-3.2.0.tgz",
++      "integrity": "sha512-Oq1bLqisTyK3TSCXpPbT4sdeYNdmyZJv1LxpEm2vu1ZhK89kSE5YXwZc3cWk0MagGaKriBh9mCFbVGtO+vY29A==",
++      "dev": true,
++      "license": "MIT",
++      "dependencies": {
++        "builtin-status-codes": "^3.0.0",
++        "inherits": "^2.0.4",
++        "readable-stream": "^3.6.0",
++        "xtend": "^4.0.2"
++      }
++    },
+     "node_modules/stream-json": {
+       "version": "1.9.1",
+       "resolved": "https://registry.npmjs.org/stream-json/-/stream-json-1.9.1.tgz",
+@@ -12926,6 +13925,19 @@
+       "integrity": "sha512-w89qg7PI8wAdvX60bMDP+bFoD5Dvhm9oLheFp5O4a2QF0cSBGsBX4qZmadPMvVqlLJBBci+WqGGOAPvcDeNSVg==",
+       "license": "MIT"
+     },
++    "node_modules/timers-browserify": {
++      "version": "2.0.12",
++      "resolved": "https://registry.npmjs.org/timers-browserify/-/timers-browserify-2.0.12.tgz",
++      "integrity": "sha512-9phl76Cqm6FhSX9Xe1ZUAMLtm1BLkKj2Qd5ApyWkXzsMRaA7dgr81kf4wJmQf/hAvg8EEyJxDo3du/0KlhPiKQ==",
++      "dev": true,
++      "license": "MIT",
++      "dependencies": {
++        "setimmediate": "^1.0.4"
++      },
++      "engines": {
++        "node": ">=0.6.0"
++      }
++    },
+     "node_modules/tiny-invariant": {
+       "version": "1.3.3",
+       "resolved": "https://registry.npmjs.org/tiny-invariant/-/tiny-invariant-1.3.3.tgz",
+@@ -13026,6 +14038,13 @@
+       "integrity": "sha512-oJFu94HQb+KVduSUQL7wnpmqnfmLsOA/nAh6b6EH0wCEoK0/mPeXU6c3wKDV83MkOuHPRHtSXKKU99IBazS/2w==",
+       "license": "0BSD"
+     },
++    "node_modules/tty-browserify": {
++      "version": "0.0.1",
++      "resolved": "https://registry.npmjs.org/tty-browserify/-/tty-browserify-0.0.1.tgz",
++      "integrity": "sha512-C3TaO7K81YvjCgQH9Q1S3R3P3BtN3RIM8n+OvX4il1K1zgE8ZhI0op7kClgkxtutIE8hQrcrHBXvIheqKUUCxw==",
++      "dev": true,
++      "license": "MIT"
++    },
+     "node_modules/tw-animate-css": {
+       "version": "1.4.0",
+       "resolved": "https://registry.npmjs.org/tw-animate-css/-/tw-animate-css-1.4.0.tgz",
+@@ -13222,6 +14241,27 @@
+         "punycode": "^2.1.0"
+       }
+     },
++    "node_modules/url": {
++      "version": "0.11.4",
++      "resolved": "https://registry.npmjs.org/url/-/url-0.11.4.tgz",
++      "integrity": "sha512-oCwdVC7mTuWiPyjLUz/COz5TLk6wgp0RCsN+wHZ2Ekneac9w8uuV0njcbbie2ME+Vs+d6duwmYuR3HgQXs1fOg==",
++      "dev": true,
++      "license": "MIT",
++      "dependencies": {
++        "punycode": "^1.4.1",
++        "qs": "^6.12.3"
++      },
++      "engines": {
++        "node": ">= 0.4"
++      }
++    },
++    "node_modules/url/node_modules/punycode": {
++      "version": "1.4.1",
++      "resolved": "https://registry.npmjs.org/punycode/-/punycode-1.4.1.tgz",
++      "integrity": "sha512-jmYNElW7yvO7TV33CjSmvSiE2yco3bV2czu/OzDKdMNVZQWfxCblURLhf+47syQRBntjfLdd/H0egrzIG+oaFQ==",
++      "dev": true,
++      "license": "MIT"
++    },
+     "node_modules/use-callback-ref": {
+       "version": "1.3.3",
+       "resolved": "https://registry.npmjs.org/use-callback-ref/-/use-callback-ref-1.3.3.tgz",
+@@ -13294,6 +14334,20 @@
+       "integrity": "sha512-E8VjFIQ/TyQgp+TZfS6l8yp/xWppSAHzidGiRrqe4bK4XP9pTRyKFgGJpO3SN7zdX4DeomTrwaseCHovfpFcqQ==",
+       "license": "MIT"
+     },
++    "node_modules/util": {
++      "version": "0.12.5",
++      "resolved": "https://registry.npmjs.org/util/-/util-0.12.5.tgz",
++      "integrity": "sha512-kZf/K6hEIrWHI6XqOFUiiMa+79wE/D8Q+NCNAWclkyg3b4d2k7s0QGepNjiABc+aR3N1PAyHL7p6UcLY6LmrnA==",
++      "dev": true,
++      "license": "MIT",
++      "dependencies": {
++        "inherits": "^2.0.3",
++        "is-arguments": "^1.0.4",
++        "is-generator-function": "^1.0.7",
++        "is-typed-array": "^1.1.3",
++        "which-typed-array": "^1.1.2"
++      }
++    },
+     "node_modules/util-deprecate": {
+       "version": "1.0.2",
+       "resolved": "https://registry.npmjs.org/util-deprecate/-/util-deprecate-1.0.2.tgz",
+@@ -13313,20 +14367,6 @@
+         "uuid": "dist/bin/uuid"
+       }
+     },
+-    "node_modules/valibot": {
+-      "version": "1.2.0",
+-      "resolved": "https://registry.npmjs.org/valibot/-/valibot-1.2.0.tgz",
+-      "integrity": "sha512-mm1rxUsmOxzrwnX5arGS+U4T25RdvpPjPN4yR0u9pUBov9+zGVtO84tif1eY4r6zWxVxu3KzIyknJy3rxfRZZg==",
+-      "license": "MIT",
+-      "peerDependencies": {
+-        "typescript": ">=5"
+-      },
+-      "peerDependenciesMeta": {
+-        "typescript": {
+-          "optional": true
+-        }
+-      }
+-    },
+     "node_modules/vaul": {
+       "version": "1.1.2",
+       "resolved": "https://registry.npmjs.org/vaul/-/vaul-1.1.2.tgz",
+@@ -13437,12 +14477,36 @@
+         }
+       }
+     },
++    "node_modules/vite-plugin-node-polyfills": {
++      "version": "0.25.0",
++      "resolved": "https://registry.npmjs.org/vite-plugin-node-polyfills/-/vite-plugin-node-polyfills-0.25.0.tgz",
++      "integrity": "sha512-rHZ324W3LhfGPxWwQb2N048TThB6nVvnipsqBUJEzh3R9xeK9KI3si+GMQxCuAcpPJBVf0LpDtJ+beYzB3/chg==",
++      "dev": true,
++      "license": "MIT",
++      "dependencies": {
++        "@rollup/plugin-inject": "^5.0.5",
++        "node-stdlib-browser": "^1.3.1"
++      },
++      "funding": {
++        "url": "https://github.com/sponsors/davidmyersdev"
++      },
++      "peerDependencies": {
++        "vite": "^2.0.0 || ^3.0.0 || ^4.0.0 || ^5.0.0 || ^6.0.0 || ^7.0.0"
++      }
++    },
+     "node_modules/vlq": {
+       "version": "2.0.4",
+       "resolved": "https://registry.npmjs.org/vlq/-/vlq-2.0.4.tgz",
+       "integrity": "sha512-aodjPa2wPQFkra1G8CzJBTHXhgk3EVSwxSWXNPr1fgdFLUb8kvLV1iEb6rFgasIsjP82HWI6dsb5Io26DDnasA==",
+       "license": "MIT"
+     },
++    "node_modules/vm-browserify": {
++      "version": "1.1.2",
++      "resolved": "https://registry.npmjs.org/vm-browserify/-/vm-browserify-1.1.2.tgz",
++      "integrity": "sha512-2ham8XPWTONajOR0ohOKOHXkm3+gaBmGut3SRuu75xLd/RRaY6vqgh8NBYYk7+RW3u5AtzPQZG8F10LHkl0lAQ==",
++      "dev": true,
++      "license": "MIT"
++    },
+     "node_modules/wcwidth": {
+       "version": "1.0.1",
+       "resolved": "https://registry.npmjs.org/wcwidth/-/wcwidth-1.0.1.tgz",
+@@ -13582,6 +14646,16 @@
+         }
+       }
+     },
++    "node_modules/xtend": {
++      "version": "4.0.2",
++      "resolved": "https://registry.npmjs.org/xtend/-/xtend-4.0.2.tgz",
++      "integrity": "sha512-LKYU1iAXJXUgAXn9URjiu+MWhyUXHsvfp7mcuYm9dSUKK0/CjtrUwFAxD82/mCWbtLsGjFIad0wIsod4zrTAEQ==",
++      "dev": true,
++      "license": "MIT",
++      "engines": {
++        "node": ">=0.4"
++      }
++    },
+     "node_modules/y18n": {
+       "version": "4.0.3",
+       "resolved": "https://registry.npmjs.org/y18n/-/y18n-4.0.3.tgz",
+diff --git a/package.json b/package.json
+index 701438a..b553be5 100644
+--- a/package.json
++++ b/package.json
+@@ -49,9 +49,9 @@
+     "@solana/wallet-adapter-react-ui": "^0.9.39",
+     "@solana/wallet-adapter-solflare": "^0.6.32",
+     "@solana/web3.js": "^1.98.4",
++    "@telegram-apps/sdk": "^3.11.8",
++    "@telegram-apps/sdk-react": "^3.3.9",
+     "@telegram-apps/telegram-ui": "^2.1.13",
+-    "@tma.js/sdk": "^3.1.6",
+-    "@tma.js/sdk-react": "^3.0.15",
+     "@webacy-xyz/sdk": "^1.2.1",
+     "bignumber.js": "^9.1.2",
+     "bs58": "^6.0.0",
+@@ -61,6 +61,7 @@
+     "cmdk": "^1.0.0",
+     "date-fns": "^4.1.0",
+     "embla-carousel-react": "^8.3.0",
++    "framer-motion": "^12.34.0",
+     "input-otp": "^1.2.4",
+     "lucide-react": "^0.470.0",
+     "next-themes": "^0.4.0",
+@@ -95,6 +96,7 @@
+     "tw-animate-css": "^1.4.0",
+     "typescript": "~5.7.2",
+     "typescript-eslint": "^8.18.0",
+-    "vite": "^6.0.0"
++    "vite": "^6.0.0",
++    "vite-plugin-node-polyfills": "^0.25.0"
+   }
+ }
+diff --git a/src/App.tsx b/src/App.tsx
+index 8b0b787..07a11e0 100644
+--- a/src/App.tsx
++++ b/src/App.tsx
+@@ -5,18 +5,21 @@ import { Toaster } from 'sonner';
+ import { Home, Target, Trophy, User } from 'lucide-react';
+
+ // Pages
++import { LandingPage } from '@/pages/LandingPage';
+ import { HomePage } from '@/pages/HomePage';
+ import { QuestsPage } from '@/pages/QuestsPage';
+ import { RankPage } from '@/pages/RankPage';
+ import { ProfilePage } from '@/pages/ProfilePage';
+
+-export type TabType = 'home' | 'quests' | 'rank' | 'profile';
++export type TabType = 'landing' | 'home' | 'quests' | 'rank' | 'profile';
+
+ function App() {
+-  const [currentTab, setCurrentTab] = useState<TabType>('home');
++  const [currentTab, setCurrentTab] = useState<TabType>('landing');
+
+   const renderContent = () => {
+     switch (currentTab) {
++      case 'landing':
++        return <LandingPage onStart={setCurrentTab} />;
+       case 'home':
+         return <HomePage onNavigate={setCurrentTab} />;
+       case 'quests':
+@@ -26,7 +29,7 @@ function App() {
+       case 'profile':
+         return <ProfilePage />;
+       default:
+-        return <HomePage onNavigate={setCurrentTab} />;
++        return <LandingPage onStart={setCurrentTab} />;
+     }
+   };
+
+@@ -50,37 +53,39 @@ function App() {
+         {renderContent()}
+       </main>
+
+-      {/* Bottom Navigation */}
+-      <nav className="bottom-nav">
+-        <button
+-          className={`nav-item ${currentTab === 'home' ? 'active' : ''}`}
+-          onClick={() => setCurrentTab('home')}
+-        >
+-          <Home />
+-          <span>Home</span>
+-        </button>
+-        <button
+-          className={`nav-item ${currentTab === 'quests' ? 'active' : ''}`}
+-          onClick={() => setCurrentTab('quests')}
+-        >
+-          <Target />
+-          <span>Quests</span>
+-        </button>
+-        <button
+-          className={`nav-item ${currentTab === 'rank' ? 'active' : ''}`}
+-          onClick={() => setCurrentTab('rank')}
+-        >
+-          <Trophy />
+-          <span>Rank</span>
+-        </button>
+-        <button
+-          className={`nav-item ${currentTab === 'profile' ? 'active' : ''}`}
+-          onClick={() => setCurrentTab('profile')}
+-        >
+-          <User />
+-          <span>Profile</span>
+-        </button>
+-      </nav>
++      {/* Bottom Navigation (Hide on Landing) */}
++      {currentTab !== 'landing' && (
++        <nav className="bottom-nav">
++          <button
++            className={`nav-item ${currentTab === 'home' ? 'active' : ''}`}
++            onClick={() => setCurrentTab('home')}
++          >
++            <Home />
++            <span>Home</span>
++          </button>
++          <button
++            className={`nav-item ${currentTab === 'quests' ? 'active' : ''}`}
++            onClick={() => setCurrentTab('quests')}
++          >
++            <Target />
++            <span>Quests</span>
++          </button>
++          <button
++            className={`nav-item ${currentTab === 'rank' ? 'active' : ''}`}
++            onClick={() => setCurrentTab('rank')}
++          >
++            <Trophy />
++            <span>Rank</span>
++          </button>
++          <button
++            className={`nav-item ${currentTab === 'profile' ? 'active' : ''}`}
++            onClick={() => setCurrentTab('profile')}
++          >
++            <User />
++            <span>Profile</span>
++          </button>
++        </nav>
++      )}
+     </div>
+   );
+ }
+diff --git a/src/hooks/useHaptic.ts b/src/hooks/useHaptic.ts
+new file mode 100644
+index 0000000..045ea7a
+--- /dev/null
++++ b/src/hooks/useHaptic.ts
+@@ -0,0 +1,35 @@
++import { hapticFeedback } from '@telegram-apps/sdk';
++
++export const useHaptic = () => {
++  const impact = (style: 'light' | 'medium' | 'heavy' | 'rigid' | 'soft' = 'medium') => {
++    try {
++      if (hapticFeedback.impactOccurred.isSupported()) {
++        hapticFeedback.impactOccurred(style);
++      }
++    } catch {
++      // Ignore
++    }
++  };
++
++  const notification = (type: 'error' | 'success' | 'warning') => {
++    try {
++      if (hapticFeedback.notificationOccurred.isSupported()) {
++        hapticFeedback.notificationOccurred(type);
++      }
++    } catch {
++      // Ignore
++    }
++  };
++
++  const selection = () => {
++    try {
++      if (hapticFeedback.selectionChanged.isSupported()) {
++        hapticFeedback.selectionChanged();
++      }
++    } catch {
++      // Ignore
++    }
++  };
++
++  return { impact, notification, selection };
++};
+diff --git a/src/index.css b/src/index.css
+index f4eefd8..991566a 100644
+--- a/src/index.css
++++ b/src/index.css
+@@ -15,6 +15,7 @@
+   --accent-purple-dark: #7C3AED;
+   --accent-green: #10B981;
+   --accent-blue: #06B6D4;
++  --accent-gold: #F59E0B;
+
+   /* Text Colors */
+   --text-primary: #FFFFFF;
+@@ -24,15 +25,17 @@
+   /* Border & Effects */
+   --border-subtle: rgba(255, 255, 255, 0.1);
+   --border-glow: rgba(168, 85, 247, 0.3);
+-  --glass-bg: rgba(255, 255, 255, 0.05);
++  --glass-bg: rgba(255, 255, 255, 0.03);
++  --glass-bg-heavy: rgba(255, 255, 255, 0.08);
+
+   /* Spacing */
+   --radius-sm: 12px;
+   --radius-md: 16px;
+   --radius-lg: 20px;
++  --radius-xl: 24px;
+
+   /* Shadows */
+-  --shadow-card: 0 4px 24px rgba(0, 0, 0, 0.4);
++  --shadow-card: 0 8px 32px rgba(0, 0, 0, 0.5);
+   --shadow-glow: 0 0 40px rgba(168, 85, 247, 0.15);
+   --shadow-glow-strong: 0 0 60px rgba(168, 85, 247, 0.25);
+ }
+@@ -74,17 +77,25 @@ h1, h2, h3, h4, h5, h6 {
+ /* Glassmorphism Cards */
+ .glass-card {
+   background: var(--glass-bg);
+-  backdrop-filter: blur(20px);
+-  -webkit-backdrop-filter: blur(20px);
++  backdrop-filter: blur(24px);
++  -webkit-backdrop-filter: blur(24px);
+   border: 1px solid var(--border-subtle);
+   border-radius: var(--radius-md);
+-  transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
++  transition: all 0.4s cubic-bezier(0.4, 0, 0.2, 1);
++}
++
++.glass-card-heavy {
++  background: var(--glass-bg-heavy);
++  backdrop-filter: blur(32px);
++  -webkit-backdrop-filter: blur(32px);
++  border: 1px solid rgba(255, 255, 255, 0.15);
++  border-radius: var(--radius-lg);
+ }
+
+ .glass-card:hover {
+   border-color: var(--border-glow);
+   box-shadow: var(--shadow-glow);
+-  transform: translateY(-2px);
++  transform: translateY(-4px);
+ }
+
+ /* Buttons */
+@@ -320,14 +331,35 @@ h1, h2, h3, h4, h5, h6 {
+ }
+
+ /* Safe Area */
+-@supports (padding-top: env(safe-area-inset-top)) {
+-  .safe-area-top {
+-    padding-top: env(safe-area-inset-top);
+-  }
++.safe-area-top {
++  padding-top: env(safe-area-inset-top, 0px);
++}
+
+-  .safe-area-bottom {
+-    padding-bottom: env(safe-area-inset-bottom);
+-  }
++.safe-area-bottom {
++  padding-bottom: env(safe-area-inset-bottom, 0px);
++}
++
++/* Scroll Hide */
++.hide-scrollbar::-webkit-scrollbar {
++  display: none;
++}
++.hide-scrollbar {
++  -ms-overflow-style: none;
++  scrollbar-width: none;
++}
++
++/* Modern Layout Utilities */
++.flex-center {
++  display: flex;
++  align-items: center;
++  justify-content: center;
++}
++
++.absolute-center {
++  position: absolute;
++  top: 50%;
++  left: 50%;
++  transform: translate(-50%, -50%);
+ }
+
+ /* Wallet Adapter Override */
+diff --git a/src/pages/LandingPage.tsx b/src/pages/LandingPage.tsx
+new file mode 100644
+index 0000000..59a553c
+--- /dev/null
++++ b/src/pages/LandingPage.tsx
+@@ -0,0 +1,320 @@
++// Campus SOL v2.0 - Professional Landing Page
++
++import { motion } from 'framer-motion';
++import {
++  ChevronRight,
++  ShieldCheck,
++  Zap,
++  Target,
++  Users,
++  ArrowRight,
++  MapPin,
++  Smartphone,
++  ExternalLink
++} from 'lucide-react';
++import type { TabType } from '@/App';
++
++interface LandingPageProps {
++  onStart: (tab: TabType) => void;
++}
++
++export const LandingPage = ({ onStart }: LandingPageProps) => {
++  const containerVariants = {
++    hidden: { opacity: 0 },
++    visible: {
++      opacity: 1,
++      transition: {
++        staggerChildren: 0.2
++      }
++    }
++  };
++
++  const itemVariants = {
++    hidden: { opacity: 0, y: 20 },
++    visible: { opacity: 1, y: 0 }
++  };
++
++  return (
++    <div className="min-h-screen bg-[#0F0F1E] text-white selection:bg-purple-500/30">
++      {/* Navbar */}
++      <nav className="fixed top-0 left-0 right-0 z-50 bg-[#0F0F1E]/80 backdrop-blur-xl border-b border-white/5">
++        <div className="max-w-7xl mx-auto px-4 h-16 flex items-center justify-between">
++          <div className="flex items-center gap-2">
++            <div className="w-8 h-8 rounded-lg bg-gradient-to-br from-purple-500 to-pink-500 flex-center">
++              <Zap className="w-5 h-5 text-white" />
++            </div>
++            <span className="font-bold text-xl tracking-tight">Campus<span className="text-purple-500">SOL</span></span>
++          </div>
++          <div className="hidden md:flex items-center gap-8 text-sm font-medium text-gray-400">
++            <a href="#features" className="hover:text-white transition-colors">Features</a>
++            <a href="#roadmap" className="hover:text-white transition-colors">Roadmap</a>
++            <a href="#security" className="hover:text-white transition-colors">Security</a>
++          </div>
++          <button
++            onClick={() => onStart('home')}
++            className="btn-primary h-10 px-6 text-sm"
++          >
++            Launch App
++          </button>
++        </div>
++      </nav>
++
++      {/* Hero Section */}
++      <section className="relative pt-32 pb-20 px-4 overflow-hidden">
++        {/* Background Gradients */}
++        <div className="absolute top-0 left-1/2 -translate-x-1/2 w-[1000px] h-[600px] bg-purple-500/10 rounded-full blur-[120px] pointer-events-none" />
++        <div className="absolute bottom-0 right-0 w-[500px] h-[500px] bg-blue-500/10 rounded-full blur-[100px] pointer-events-none" />
++
++        <div className="max-w-4xl mx-auto text-center relative z-10">
++          <motion.div
++            initial={{ opacity: 0, scale: 0.9 }}
++            animate={{ opacity: 1, scale: 1 }}
++            className="inline-flex items-center gap-2 px-3 py-1 rounded-full bg-purple-500/10 border border-purple-500/20 text-purple-400 text-xs font-bold mb-8"
++          >
++            <MapPin className="w-3 h-3" />
++            LIVE IN NIGERIAN UNIVERSITIES
++          </motion.div>
++
++          <motion.h1
++            initial={{ opacity: 0, y: 30 }}
++            animate={{ opacity: 1, y: 0 }}
++            className="text-5xl md:text-7xl font-extrabold mb-6 leading-tight"
++          >
++            Master Web3 on <br />
++            <span className="text-gradient">Your Campus.</span>
++          </motion.h1>
++
++          <motion.p
++            initial={{ opacity: 0, y: 30 }}
++            animate={{ opacity: 1, y: 0 }}
++            transition={{ delay: 0.1 }}
++            className="text-gray-400 text-lg md:text-xl max-w-2xl mx-auto mb-10 leading-relaxed"
++          >
++            Join thousands of Nigerian students learning Solana basics, completing quests, and earning real rewards. Secure, fast, and built for the future.
++          </motion.p>
++
++          <motion.div
++            initial={{ opacity: 0, y: 30 }}
++            animate={{ opacity: 1, y: 0 }}
++            transition={{ delay: 0.2 }}
++            className="flex flex-col sm:flex-row items-center justify-center gap-4"
++          >
++            <button
++              onClick={() => onStart('quests')}
++              className="btn-primary w-full sm:w-auto h-14 px-10 text-lg group"
++            >
++              Start Earning
++              <ChevronRight className="w-5 h-5 group-hover:translate-x-1 transition-transform" />
++            </button>
++            <button
++              className="btn-secondary w-full sm:w-auto h-14 px-10 text-lg"
++              onClick={() => onStart('home')}
++            >
++              View Leaderboard
++            </button>
++          </motion.div>
++        </div>
++      </section>
++
++      {/* Trust Shield (Webacy) */}
++      <section id="security" className="py-20 px-4">
++        <div className="max-w-5xl mx-auto">
++          <motion.div
++            variants={containerVariants}
++            initial="hidden"
++            whileInView="visible"
++            viewport={{ once: true }}
++            className="glass-card-heavy p-8 md:p-12 flex flex-col md:flex-row items-center gap-10"
++          >
++            <div className="flex-1">
++              <div className="inline-flex items-center gap-2 text-[#10B981] font-bold text-sm mb-4">
++                <ShieldCheck className="w-5 h-5" />
++                SECURITY-FIRST PLATFORM
++              </div>
++              <h2 className="text-3xl md:text-4xl font-bold mb-6">Your safety is our priority.</h2>
++              <p className="text-gray-400 mb-8 leading-relaxed">
++                Powered by <span className="text-white font-bold">Webacy DD.xyz</span>, we audit every student wallet and transaction. Get your "Naija Safety Score" and learn to navigate Web3 without the fear of drainers.
++              </p>
++              <div className="grid grid-cols-2 gap-4">
++                <div className="flex items-center gap-3">
++                  <div className="w-2 h-2 rounded-full bg-green-500" />
++                  <span className="text-sm font-medium">Real-time Risk Audit</span>
++                </div>
++                <div className="flex items-center gap-3">
++                  <div className="w-2 h-2 rounded-full bg-green-500" />
++                  <span className="text-sm font-medium">Sybil Protection</span>
++                </div>
++                <div className="flex items-center gap-3">
++                  <div className="w-2 h-2 rounded-full bg-green-500" />
++                  <span className="text-sm font-medium">Address Screening</span>
++                </div>
++                <div className="flex items-center gap-3">
++                  <div className="w-2 h-2 rounded-full bg-green-500" />
++                  <span className="text-sm font-medium">Verified by DD.xyz</span>
++                </div>
++              </div>
++            </div>
++            <div className="relative">
++              <div className="w-48 h-48 md:w-64 md:h-64 rounded-full bg-purple-500/20 animate-pulse absolute-center blur-3xl" />
++              <div className="relative w-40 h-40 md:w-56 md:h-56 bg-gradient-to-br from-purple-600 to-indigo-600 rounded-3xl flex-center shadow-2xl rotate-3">
++                <ShieldCheck className="w-20 h-20 md:w-28 md:h-28 text-white" />
++              </div>
++            </div>
++          </motion.div>
++        </div>
++      </section>
++
++      {/* Features Grid */}
++      <section id="features" className="py-20 px-4">
++        <div className="max-w-7xl mx-auto">
++          <div className="text-center mb-16">
++            <h2 className="text-3xl md:text-5xl font-bold mb-4">Why Nigerian Students Love Us</h2>
++            <p className="text-gray-400 max-w-2xl mx-auto">Built for the local context, handling Naira volatility and campus life.</p>
++          </div>
++
++          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
++            {[
++              {
++                icon: <Smartphone className="w-8 h-8 text-blue-400" />,
++                title: "Telegram Mini App",
++                desc: "No new apps to download. Access directly from Telegram, optimized for low-end devices."
++              },
++              {
++                icon: <Zap className="w-8 h-8 text-yellow-400" />,
++                title: "Solana Fast",
++                desc: "Experience sub-second transactions and near-zero fees on the world's most performant blockchain."
++              },
++              {
++                icon: <Users className="w-8 h-8 text-purple-400" />,
++                title: "Local Community",
++                desc: "Connect with students from UNILAG, UI, OAU, and more. Compete on the national leaderboard."
++              }
++            ].map((feature, idx) => (
++              <motion.div
++                key={idx}
++                variants={itemVariants}
++                initial="hidden"
++                whileInView="visible"
++                viewport={{ once: true }}
++                className="glass-card p-8"
++              >
++                <div className="w-14 h-14 rounded-2xl bg-white/5 flex-center mb-6 border border-white/10">
++                  {feature.icon}
++                </div>
++                <h3 className="text-xl font-bold mb-4">{feature.title}</h3>
++                <p className="text-gray-400 leading-relaxed">{feature.desc}</p>
++              </motion.div>
++            ))}
++          </div>
++        </div>
++      </section>
++
++      {/* Roadmap / Quests Preview */}
++      <section id="roadmap" className="py-20 px-4 bg-white/[0.02]">
++        <div className="max-w-4xl mx-auto">
++          <div className="text-center mb-16">
++            <h2 className="text-3xl md:text-5xl font-bold mb-4">Your Web3 Journey</h2>
++            <p className="text-gray-400">Complete these steps to become a Campus SOL Pioneer.</p>
++          </div>
++
++          <div className="space-y-4">
++            {[
++              { id: 1, title: "Connect Wallet", status: "Level 1" },
++              { id: 2, title: "Security Audit", status: "Safety First" },
++              { id: 3, title: "First Transfer", status: "On-chain" },
++              { id: 4, title: "USDC Swap", status: "Stable Cash" },
++              { id: 5, title: "Solana Pay", status: "Instant" },
++              { id: 6, title: "The Grand Quiz", status: "Final Boss" }
++            ].map((step, idx) => (
++              <motion.div
++                key={idx}
++                initial={{ opacity: 0, x: -20 }}
++                whileInView={{ opacity: 1, x: 0 }}
++                transition={{ delay: idx * 0.1 }}
++                viewport={{ once: true }}
++                className="flex items-center gap-6 p-4 rounded-2xl bg-white/5 border border-white/5 hover:border-purple-500/30 transition-colors group cursor-pointer"
++              >
++                <div className="w-12 h-12 rounded-xl bg-purple-500/10 flex-center font-bold text-purple-400">
++                  {step.id}
++                </div>
++                <div className="flex-1">
++                  <h4 className="font-bold">{step.title}</h4>
++                  <span className="text-[10px] text-gray-500 uppercase tracking-widest">{step.status}</span>
++                </div>
++                <div className="w-8 h-8 rounded-full border border-white/10 flex-center group-hover:bg-purple-500/20 transition-colors">
++                  <ArrowRight className="w-4 h-4 text-gray-500 group-hover:text-white" />
++                </div>
++              </motion.div>
++            ))}
++          </div>
++        </div>
++      </section>
++
++      {/* Social Proof */}
++      <section className="py-20 px-4">
++        <div className="max-w-6xl mx-auto">
++          <div className="grid grid-cols-2 md:grid-cols-4 gap-8 opacity-50 grayscale hover:grayscale-0 transition-all duration-700">
++            <div className="flex-center gap-2">
++              <Zap className="w-6 h-6" />
++              <span className="font-bold">SOLANA</span>
++            </div>
++            <div className="flex-center gap-2">
++              <ShieldCheck className="w-6 h-6" />
++              <span className="font-bold">WEBACY</span>
++            </div>
++            <div className="flex-center gap-2">
++              <Smartphone className="w-6 h-6" />
++              <span className="font-bold">TELEGRAM</span>
++            </div>
++            <div className="flex-center gap-2">
++              <Target className="w-6 h-6" />
++              <span className="font-bold">JUPITER</span>
++            </div>
++          </div>
++        </div>
++      </section>
++
++      {/* CTA Section */}
++      <section className="py-20 px-4">
++        <div className="max-w-5xl mx-auto">
++          <div className="relative rounded-[40px] bg-gradient-to-br from-purple-600 to-indigo-700 p-10 md:p-20 overflow-hidden text-center">
++            {/* Decoration */}
++            <div className="absolute top-0 right-0 w-64 h-64 bg-white/10 rounded-full blur-3xl -mr-32 -mt-32" />
++            <div className="absolute bottom-0 left-0 w-64 h-64 bg-black/10 rounded-full blur-3xl -ml-32 -mb-32" />
++
++            <h2 className="text-4xl md:text-6xl font-black mb-6 relative z-10">Ready to join Nigeria&apos;s <br /> Web3 Revolution?</h2>
++            <p className="text-purple-100 text-lg mb-10 max-w-xl mx-auto relative z-10">Start your first quest today and join the elite Campus SOL Pioneers.</p>
++
++            <button
++              onClick={() => onStart('home')}
++              className="bg-white text-purple-700 h-16 px-12 rounded-2xl font-bold text-xl hover:scale-105 transition-transform shadow-xl relative z-10"
++            >
++              Get Started Now
++            </button>
++          </div>
++        </div>
++      </section>
++
++      {/* Footer */}
++      <footer className="py-12 border-t border-white/5 px-4">
++        <div className="max-w-7xl mx-auto flex flex-col md:flex-row justify-between items-center gap-8">
++          <div className="flex items-center gap-2">
++            <Zap className="w-5 h-5 text-purple-500" />
++            <span className="font-bold">Campus SOL Nigeria</span>
++          </div>
++          <div className="flex items-center gap-6 text-sm text-gray-500">
++            <a href="#" className="hover:text-white transition-colors">Privacy</a>
++            <a href="#" className="hover:text-white transition-colors">Terms</a>
++            <a href="#" className="hover:text-white transition-colors">Twitter</a>
++            <a href="#" className="hover:text-white transition-colors flex items-center gap-1">
++              Github <ExternalLink className="w-3 h-3" />
++            </a>
++          </div>
++          <div className="text-gray-500 text-sm">
++            © 2026 Campus SOL. Built with 💜 for students.
++          </div>
++        </div>
++      </footer>
++    </div>
++  );
++};
+diff --git a/src/pages/ProfilePage.tsx b/src/pages/ProfilePage.tsx
+index 2680649..a205c49 100644
+--- a/src/pages/ProfilePage.tsx
++++ b/src/pages/ProfilePage.tsx
+@@ -3,6 +3,7 @@
+ import { useWallet } from '@solana/wallet-adapter-react';
+ import { WalletMultiButton } from '@solana/wallet-adapter-react-ui';
+ import { useState } from 'react';
++import { motion, AnimatePresence } from 'framer-motion';
+ import {
+   Wallet,
+   Copy,
+@@ -98,10 +99,15 @@ export const ProfilePage = () => {
+   };
+
+   return (
+-    <div className="animate-slide-up">
++    <div className="animate-slide-up min-h-screen bg-[#0F0F1E]">
+       {/* User Card */}
+-      <section className="px-4 pt-6 pb-4">
+-        <div className="glass-card p-6 text-center">
++      <section className="px-4 pt-8 pb-4">
++        <motion.div
++          initial={{ opacity: 0, y: 20 }}
++          animate={{ opacity: 1, y: 0 }}
++          className="glass-card p-8 text-center relative overflow-hidden"
++        >
++          <div className="absolute top-0 right-0 w-32 h-32 bg-purple-500/5 rounded-full -mr-16 -mt-16" />
+           {/* Avatar */}
+           <div className="relative inline-block mb-4">
+             <div className="w-24 h-24 rounded-full p-[3px] bg-gradient-to-br from-[#A855F7] to-[#10B981]">
+@@ -151,42 +157,62 @@ export const ProfilePage = () => {
+           {connected ? (
+             <button
+               onClick={disconnect}
+-              className="btn-secondary w-full"
++              className="btn-secondary w-full h-12"
+             >
+               <LogOut className="w-4 h-4" />
+               Disconnect
+             </button>
+           ) : (
+-            <WalletMultiButton className="w-full" />
++            <div className="wallet-btn-wrapper">
++              <WalletMultiButton className="w-full" />
++            </div>
+           )}
+-        </div>
++        </motion.div>
+       </section>
+
+       {/* Statistics Grid */}
+-      <section className="px-4 mb-6">
+-        <h2 className="text-lg font-semibold text-white mb-4">Statistics</h2>
++      <section className="px-4 mb-8">
++        <h2 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
++          <Sparkles className="w-5 h-5 text-purple-400" />
++          Statistics
++        </h2>
+         <div className="grid grid-cols-3 gap-3">
+-          <div className="glass-card p-4 text-center">
++          <motion.div
++            initial={{ opacity: 0, scale: 0.9 }}
++            animate={{ opacity: 1, scale: 1 }}
++            transition={{ delay: 0.1 }}
++            className="glass-card p-4 text-center group"
++          >
+             <div className="w-10 h-10 rounded-xl bg-green-500/20 flex items-center justify-center mx-auto mb-2">
+               <Wallet className="w-5 h-5 text-[#10B981]" />
+             </div>
+             <p className="text-xl font-bold text-white">{totalRewards.toFixed(3)}</p>
+             <p className="text-[#10B981] text-xs">{formatNaira(nairaValue)}</p>
+-          </div>
+-          <div className="glass-card p-4 text-center">
++          </motion.div>
++          <motion.div
++            initial={{ opacity: 0, scale: 0.9 }}
++            animate={{ opacity: 1, scale: 1 }}
++            transition={{ delay: 0.2 }}
++            className="glass-card p-4 text-center group"
++          >
+             <div className="w-10 h-10 rounded-xl bg-purple-500/20 flex items-center justify-center mx-auto mb-2">
+               <Target className="w-5 h-5 text-[#A855F7]" />
+             </div>
+             <p className="text-xl font-bold text-white">{completedQuestsCount}</p>
+             <p className="text-[#64748B] text-xs">Quests Done</p>
+-          </div>
+-          <div className="glass-card p-4 text-center">
++          </motion.div>
++          <motion.div
++            initial={{ opacity: 0, scale: 0.9 }}
++            animate={{ opacity: 1, scale: 1 }}
++            transition={{ delay: 0.3 }}
++            className="glass-card p-4 text-center group"
++          >
+             <div className="w-10 h-10 rounded-xl bg-yellow-500/20 flex items-center justify-center mx-auto mb-2">
+               <Award className="w-5 h-5 text-yellow-400" />
+             </div>
+             <p className="text-xl font-bold text-white">{minted ? 1 : 0}</p>
+             <p className="text-[#64748B] text-xs">Badges</p>
+-          </div>
++          </motion.div>
+         </div>
+       </section>
+
+@@ -266,9 +292,20 @@ export const ProfilePage = () => {
+       </section>
+
+       {/* Share Badge Modal */}
+-      {showShare && (
+-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
+-          <div className="w-full max-w-md">
++      <AnimatePresence>
++        {showShare && (
++          <motion.div
++            initial={{ opacity: 0 }}
++            animate={{ opacity: 1 }}
++            exit={{ opacity: 0 }}
++            className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm"
++          >
++            <motion.div
++              initial={{ scale: 0.9, opacity: 0 }}
++              animate={{ scale: 1, opacity: 1 }}
++              exit={{ scale: 0.9, opacity: 0 }}
++              className="w-full max-w-md text-center"
++            >
+             <ShareBadge
+               userName={progress?.firstName || 'Pioneer'}
+               university={USER_UNIVERSITY}
+@@ -276,15 +313,16 @@ export const ProfilePage = () => {
+               solEarned={totalRewards}
+               questCount={completedQuestsCount}
+             />
+-            <button
+-              onClick={() => setShowShare(false)}
+-              className="btn-secondary w-full mt-4"
+-            >
+-              Close
+-            </button>
+-          </div>
+-        </div>
+-      )}
++              <button
++                onClick={() => setShowShare(false)}
++                className="btn-secondary w-full mt-6 h-12"
++              >
++                Close
++              </button>
++            </motion.div>
++          </motion.div>
++        )}
++      </AnimatePresence>
+
+       {/* Quest Progress */}
+       <section className="px-4 mb-6">
+diff --git a/src/pages/QuestsPage.tsx b/src/pages/QuestsPage.tsx
+index 3c0bad6..b5bce51 100644
+--- a/src/pages/QuestsPage.tsx
++++ b/src/pages/QuestsPage.tsx
+@@ -1,6 +1,7 @@
+ // Campus SOL Starter - Quests Page with Naija Flavor
+
+ import { useState } from 'react';
++import { motion, AnimatePresence } from 'framer-motion';
+ import { useWallet } from '@solana/wallet-adapter-react';
+ import {
+   Target,
+@@ -146,16 +147,25 @@ export const QuestsPage = () => {
+
+       {/* Quests List */}
+       <section className="px-4 pb-24">
+-        <div className="space-y-3">
+-          {filteredQuests.map((quest) => {
++        <motion.div
++          initial={{ opacity: 0 }}
++          animate={{ opacity: 1 }}
++          className="space-y-3"
++        >
++          {filteredQuests.map((quest, idx) => {
+             const status = getQuestStatus(quest.id);
+             const Icon = iconMap[quest.icon] || Target;
+             const isCompleted = status === 'completed';
+             const isLocked = status === 'locked';
+
+             return (
+-              <div
++              <motion.div
+                 key={quest.id}
++                initial={{ opacity: 0, y: 20 }}
++                animate={{ opacity: 1, y: 0 }}
++                transition={{ delay: idx * 0.1 }}
++                whileHover={{ scale: isLocked ? 1 : 1.02 }}
++                whileTap={{ scale: isLocked ? 1 : 0.98 }}
+                 onClick={() => !isLocked && setActiveQuest(quest.id)}
+                 className={`glass-card p-4 flex items-center gap-4 cursor-pointer ${
+                   isCompleted ? 'border-green-500/30' : ''
+@@ -197,7 +207,7 @@ export const QuestsPage = () => {
+
+                 {/* Reward & Arrow */}
+                 <div className="flex items-center gap-3">
+-                  <span className="badge badge-purple">
++                  <span className="badge badge-purple bg-purple-500/10">
+                     <Coins className="w-3 h-3" />
+                     +{quest.reward}
+                   </span>
+@@ -205,28 +215,30 @@ export const QuestsPage = () => {
+                     <ChevronRight className="w-5 h-5 text-[#64748B]" />
+                   )}
+                 </div>
+-              </div>
++              </motion.div>
+             );
+           })}
+-        </div>
++        </motion.div>
+       </section>
+
+       {/* Quest Modal */}
+-      {activeQuest && (
+-        <QuestModal
+-          questId={activeQuest}
+-          onClose={() => setActiveQuest(null)}
+-          connected={connected}
+-          publicKey={publicKey}
+-          onComplete={handleCompleteQuest}
+-          quizState={quizState}
+-          handleQuizAnswer={handleQuizAnswer}
+-          submitQuizAnswer={submitQuizAnswer}
+-          nextQuestion={nextQuestion}
+-          qrData={qrData}
+-          setQrData={setQrData}
+-        />
+-      )}
++      <AnimatePresence>
++        {activeQuest && (
++          <QuestModal
++            questId={activeQuest}
++            onClose={() => setActiveQuest(null)}
++            connected={connected}
++            publicKey={publicKey}
++            onComplete={handleCompleteQuest}
++            quizState={quizState}
++            handleQuizAnswer={handleQuizAnswer}
++            submitQuizAnswer={submitQuizAnswer}
++            nextQuestion={nextQuestion}
++            qrData={qrData}
++            setQrData={setQrData}
++          />
++        )}
++      </AnimatePresence>
+     </div>
+   );
+ };
+@@ -292,8 +304,18 @@ const QuestModal = ({
+   switch (questId) {
+     case 1:
+       return (
+-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
+-          <div className="glass-card w-full max-w-md p-6 animate-slide-up">
++        <motion.div
++          initial={{ opacity: 0 }}
++          animate={{ opacity: 1 }}
++          exit={{ opacity: 0 }}
++          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm"
++        >
++          <motion.div
++            initial={{ scale: 0.9, opacity: 0, y: 20 }}
++            animate={{ scale: 1, opacity: 1, y: 0 }}
++            exit={{ scale: 0.9, opacity: 0, y: 20 }}
++            className="glass-card w-full max-w-md p-6"
++          >
+             <div className="flex items-center justify-between mb-6">
+               <h2 className="text-xl font-bold text-white">Connect Wallet</h2>
+               <button onClick={onClose} className="text-[#64748B] hover:text-white">
+@@ -326,14 +348,24 @@ const QuestModal = ({
+             >
+               Claim Reward (+0.001 SOL)
+             </button>
+-          </div>
+-        </div>
++          </motion.div>
++        </motion.div>
+       );
+
+     case 2:
+       return (
+-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
+-          <div className="glass-card w-full max-w-md p-6 animate-slide-up">
++        <motion.div
++          initial={{ opacity: 0 }}
++          animate={{ opacity: 1 }}
++          exit={{ opacity: 0 }}
++          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm"
++        >
++          <motion.div
++            initial={{ scale: 0.9, opacity: 0, y: 20 }}
++            animate={{ scale: 1, opacity: 1, y: 0 }}
++            exit={{ scale: 0.9, opacity: 0, y: 20 }}
++            className="glass-card w-full max-w-md p-6"
++          >
+             <div className="flex items-center justify-between mb-6">
+               <div className="flex items-center gap-2">
+                 <Shield className="w-6 h-6 text-[#A855F7]" />
+@@ -391,14 +423,24 @@ const QuestModal = ({
+                 Verified by <span className="text-white font-bold">DD.xyz</span>
+               </span>
+             </div>
+-          </div>
+-        </div>
++          </motion.div>
++        </motion.div>
+       );
+
+     case 3:
+       return (
+-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
+-          <div className="glass-card w-full max-w-md p-6 animate-slide-up">
++        <motion.div
++          initial={{ opacity: 0 }}
++          animate={{ opacity: 1 }}
++          exit={{ opacity: 0 }}
++          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm"
++        >
++          <motion.div
++            initial={{ scale: 0.9, opacity: 0, y: 20 }}
++            animate={{ scale: 1, opacity: 1, y: 0 }}
++            exit={{ scale: 0.9, opacity: 0, y: 20 }}
++            className="glass-card w-full max-w-md p-6"
++          >
+             <div className="flex items-center justify-between mb-6">
+               <h2 className="text-xl font-bold text-white">Send Transaction</h2>
+               <button onClick={onClose} className="text-[#64748B] hover:text-white">
+@@ -430,14 +472,24 @@ const QuestModal = ({
+                 {txRiskLoading ? <Loader2 className="w-5 h-5 animate-spin" /> : 'Verify & Complete'}
+               </button>
+             </div>
+-          </div>
+-        </div>
++          </motion.div>
++        </motion.div>
+       );
+
+     case 4:
+       return (
+-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
+-          <div className="glass-card w-full max-w-md p-6 animate-slide-up">
++        <motion.div
++          initial={{ opacity: 0 }}
++          animate={{ opacity: 1 }}
++          exit={{ opacity: 0 }}
++          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm"
++        >
++          <motion.div
++            initial={{ scale: 0.9, opacity: 0, y: 20 }}
++            animate={{ scale: 1, opacity: 1, y: 0 }}
++            exit={{ scale: 0.9, opacity: 0, y: 20 }}
++            className="glass-card w-full max-w-md p-6"
++          >
+             <div className="flex items-center justify-between mb-6">
+               <h2 className="text-xl font-bold text-white">Swap to USDC</h2>
+               <button onClick={onClose} className="text-[#64748B] hover:text-white">
+@@ -465,8 +517,8 @@ const QuestModal = ({
+             >
+               I&apos;ve Completed the Swap
+             </button>
+-          </div>
+-        </div>
++          </motion.div>
++        </motion.div>
+       );
+
+     case 5:
+@@ -493,8 +545,18 @@ const QuestModal = ({
+       };
+
+       return (
+-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
+-          <div className="glass-card w-full max-w-md p-6 animate-slide-up">
++        <motion.div
++          initial={{ opacity: 0 }}
++          animate={{ opacity: 1 }}
++          exit={{ opacity: 0 }}
++          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm"
++        >
++          <motion.div
++            initial={{ scale: 0.9, opacity: 0, y: 20 }}
++            animate={{ scale: 1, opacity: 1, y: 0 }}
++            exit={{ scale: 0.9, opacity: 0, y: 20 }}
++            className="glass-card w-full max-w-md p-6"
++          >
+             <div className="flex items-center justify-between mb-6">
+               <h2 className="text-xl font-bold text-white">Solana Pay</h2>
+               <button onClick={onClose} className="text-[#64748B] hover:text-white">
+@@ -534,16 +596,26 @@ const QuestModal = ({
+             >
+               {txRiskLoading ? <Loader2 className="w-5 h-5 animate-spin" /> : 'Complete Quest'}
+             </button>
+-          </div>
+-        </div>
++          </motion.div>
++        </motion.div>
+       );
+
+     case 6:
+       if (quizState.completed) {
+         const passed = quizState.score >= 7;
+         return (
+-          <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
+-            <div className="glass-card w-full max-w-md p-6 text-center animate-slide-up">
++          <motion.div
++            initial={{ opacity: 0 }}
++            animate={{ opacity: 1 }}
++            exit={{ opacity: 0 }}
++            className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm"
++          >
++            <motion.div
++              initial={{ scale: 0.9, opacity: 0, y: 20 }}
++              animate={{ scale: 1, opacity: 1, y: 0 }}
++              exit={{ scale: 0.9, opacity: 0, y: 20 }}
++              className="glass-card w-full max-w-md p-6 text-center"
++            >
+               <div className={`w-20 h-20 ${passed ? 'bg-green-500/20' : 'bg-yellow-500/20'} rounded-full flex items-center justify-center mx-auto mb-4`}>
+                 <Brain className={`w-10 h-10 ${passed ? 'text-green-400' : 'text-yellow-400'}`} />
+               </div>
+@@ -565,15 +637,25 @@ const QuestModal = ({
+               >
+                 Close
+               </button>
+-            </div>
+-          </div>
++            </motion.div>
++          </motion.div>
+         );
+       }
+
+       const question = quizQuestions[quizState.currentQuestion];
+       return (
+-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
+-          <div className="glass-card w-full max-w-md p-6 animate-slide-up">
++        <motion.div
++          initial={{ opacity: 0 }}
++          animate={{ opacity: 1 }}
++          exit={{ opacity: 0 }}
++          className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm"
++        >
++          <motion.div
++            initial={{ scale: 0.9, opacity: 0, y: 20 }}
++            animate={{ scale: 1, opacity: 1, y: 0 }}
++            exit={{ scale: 0.9, opacity: 0, y: 20 }}
++            className="glass-card w-full max-w-md p-6"
++          >
+             <div className="flex items-center justify-between mb-4">
+               <span className="text-[#A855F7] font-semibold">
+                 Question {quizState.currentQuestion + 1}/10
+@@ -642,8 +724,8 @@ const QuestModal = ({
+                 {quizState.currentQuestion < 9 ? 'Next Question' : 'Finish Quiz'}
+               </button>
+             )}
+-          </div>
+-        </div>
++          </motion.div>
++        </motion.div>
+       );
+
+     default:
+diff --git a/src/pages/RankPage.tsx b/src/pages/RankPage.tsx
+index 8d13824..ba7310d 100644
+--- a/src/pages/RankPage.tsx
++++ b/src/pages/RankPage.tsx
+@@ -1,7 +1,8 @@
+ // Campus SOL Starter - Rank Page (Leaderboard)
+
+ import { useState } from 'react';
+-import { Trophy, Medal, Award, Users, Zap } from 'lucide-react';
++import { motion } from 'framer-motion';
++import { Trophy, Medal, Award, Users, Zap, Search, Filter } from 'lucide-react';
+ import type { LeaderboardEntry } from '@/types';
+ import { getLeaderboard } from '@/hooks/useUserProgress';
+
+@@ -63,10 +64,16 @@ export const RankPage = () => {
+     }
+   };
+
++  const [searchTerm, setSearchTerm] = useState('');
++
++  const filteredLeaderboard = leaderboard.filter(entry =>
++    (entry.firstName || entry.username || '').toLowerCase().includes(searchTerm.toLowerCase())
++  );
++
+   return (
+-    <div className="animate-slide-up">
++    <div className="animate-slide-up min-h-screen bg-[#0F0F1E]">
+       {/* Header */}
+-      <header className="px-4 pt-6 pb-4">
++      <header className="px-4 pt-8 pb-6">
+         <div className="flex items-center gap-3 mb-2">
+           <div className="w-12 h-12 rounded-2xl bg-gradient-to-br from-yellow-400 to-orange-500 flex items-center justify-center">
+             <Trophy className="w-6 h-6 text-black" />
+@@ -79,40 +86,78 @@ export const RankPage = () => {
+       </header>
+
+       {/* Stats */}
+-      <section className="px-4 mb-6">
++      <section className="px-4 mb-8">
+         <div className="grid grid-cols-3 gap-3">
+-          <div className="glass-card p-4 text-center">
++          <motion.div
++            initial={{ opacity: 0, y: 20 }}
++            animate={{ opacity: 1, y: 0 }}
++            transition={{ delay: 0.1 }}
++            className="glass-card p-4 text-center relative overflow-hidden group"
++          >
++            <div className="absolute top-0 right-0 w-16 h-16 bg-purple-500/5 rounded-full -mr-8 -mt-8 group-hover:scale-150 transition-transform duration-500" />
+             <Users className="w-5 h-5 text-[#A855F7] mx-auto mb-2" />
+             <p className="text-xl font-bold text-white">{totalStudents}</p>
+             <p className="text-[#64748B] text-xs">Students</p>
+-          </div>
+-          <div className="glass-card p-4 text-center">
++          </motion.div>
++          <motion.div
++            initial={{ opacity: 0, y: 20 }}
++            animate={{ opacity: 1, y: 0 }}
++            transition={{ delay: 0.2 }}
++            className="glass-card p-4 text-center relative overflow-hidden group"
++          >
++            <div className="absolute top-0 right-0 w-16 h-16 bg-green-500/5 rounded-full -mr-8 -mt-8 group-hover:scale-150 transition-transform duration-500" />
+             <Zap className="w-5 h-5 text-[#10B981] mx-auto mb-2" />
+             <p className="text-xl font-bold text-white">{totalDistributed.toFixed(2)}</p>
+             <p className="text-[#64748B] text-xs">SOL</p>
+-          </div>
+-          <div className="glass-card p-4 text-center">
++          </motion.div>
++          <motion.div
++            initial={{ opacity: 0, y: 20 }}
++            animate={{ opacity: 1, y: 0 }}
++            transition={{ delay: 0.3 }}
++            className="glass-card p-4 text-center relative overflow-hidden group"
++          >
++            <div className="absolute top-0 right-0 w-16 h-16 bg-yellow-500/5 rounded-full -mr-8 -mt-8 group-hover:scale-150 transition-transform duration-500" />
+             <Award className="w-5 h-5 text-yellow-400 mx-auto mb-2" />
+             <p className="text-xl font-bold text-white">{badgeHolders}</p>
+             <p className="text-[#64748B] text-xs">Badges</p>
+-          </div>
++          </motion.div>
++        </div>
++      </section>
++
++      {/* Search & Filter */}
++      <section className="px-4 mb-6">
++        <div className="relative">
++          <Search className="absolute left-4 top-1/2 -translate-y-1/2 w-4 h-4 text-gray-500" />
++          <input
++            type="text"
++            placeholder="Search Pioneers..."
++            value={searchTerm}
++            onChange={(e) => setSearchTerm(e.target.value)}
++            className="w-full h-12 pl-12 pr-4 bg-white/5 border border-white/10 rounded-2xl text-white placeholder:text-gray-600 focus:border-purple-500/50 focus:outline-none transition-all"
++          />
++          <button className="absolute right-2 top-1/2 -translate-y-1/2 w-8 h-8 rounded-xl bg-white/5 flex-center border border-white/10 text-gray-400">
++            <Filter className="w-4 h-4" />
++          </button>
+         </div>
+       </section>
+
+       {/* Leaderboard List */}
+       <section className="px-4 pb-32">
+-        {leaderboard.length === 0 ? (
++        {filteredLeaderboard.length === 0 ? (
+           <div className="text-center py-12">
+             <Trophy className="w-16 h-16 text-[#64748B] mx-auto mb-4" />
+             <p className="text-[#A0AEC0]">No entries yet</p>
+             <p className="text-[#64748B] text-sm">Be the first to complete quests!</p>
+           </div>
+         ) : (
+-          <div className="space-y-2">
+-            {leaderboard.slice(0, 20).map((entry, index) => (
+-              <div
++          <div className="space-y-3">
++            {filteredLeaderboard.slice(0, 20).map((entry, index) => (
++              <motion.div
+                 key={entry.userId}
+-                className={`flex items-center gap-4 p-4 rounded-2xl ${getRankStyle(index)}`}
++                initial={{ opacity: 0, x: -10 }}
++                animate={{ opacity: 1, x: 0 }}
++                transition={{ delay: index * 0.05 }}
++                className={`flex items-center gap-4 p-4 rounded-2xl border border-white/5 ${getRankStyle(index)}`}
+               >
+                 {/* Rank */}
+                 {getRankIcon(index)}
+@@ -141,11 +186,11 @@ export const RankPage = () => {
+
+                 {/* SOL Amount */}
+                 <div className="text-right">
+-                  <span className="badge badge-purple">
++                  <span className="badge badge-purple bg-purple-500/10 backdrop-blur-md">
+                     {entry.totalRewards.toFixed(3)} SOL
+                   </span>
+                 </div>
+-              </div>
++              </motion.div>
+             ))}
+           </div>
+         )}
+diff --git a/vite.config.ts b/vite.config.ts
+index 5803221..82f591e 100644
+--- a/vite.config.ts
++++ b/vite.config.ts
+@@ -3,11 +3,23 @@ import react from "@vitejs/plugin-react"
+ import tailwindcss from "@tailwindcss/vite"
+ import { defineConfig } from "vite"
+ import { inspectAttr } from 'kimi-plugin-inspect-react'
++import { nodePolyfills } from 'vite-plugin-node-polyfills'
+
+ // https://vite.dev/config/
+ export default defineConfig({
+   base: './',
+-  plugins: [inspectAttr(), react(), tailwindcss()],
++  plugins: [
++    inspectAttr(),
++    react(),
++    tailwindcss(),
++    nodePolyfills({
++      globals: {
++        Buffer: true,
++        global: true,
++        process: true,
++      },
++    }),
++  ],
+   resolve: {
+     alias: {
+       "@": path.resolve(__dirname, "./src"),
