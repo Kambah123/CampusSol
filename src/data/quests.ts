@@ -14,6 +14,15 @@ export const quests: Quest[] = [
   },
   {
     id: 2,
+    title: "Secure Your Identity",
+    description: "Audit your wallet health with Webacy to ensure your funds are safe from drainers.",
+    reward: 0.001,
+    rewardToken: 'SOL',
+    completed: false,
+    icon: "Shield"
+  },
+  {
+    id: 3,
     title: "Send Your First Transaction",
     description: "Send a micro-transaction (0.0001 SOL) to verify your wallet and learn how transfers work.",
     reward: 0.002,
@@ -22,7 +31,7 @@ export const quests: Quest[] = [
     icon: "Send"
   },
   {
-    id: 3,
+    id: 4,
     title: "Swap to USDC",
     description: "Use Jupiter to swap some SOL to USDC stablecoin - your first step into stable digital dollars!",
     reward: 0.003,
@@ -31,7 +40,7 @@ export const quests: Quest[] = [
     icon: "ArrowLeftRight"
   },
   {
-    id: 4,
+    id: 5,
     title: "Solana Pay Demo",
     description: "Generate a Solana Pay QR code and experience the future of instant payments.",
     reward: 0.004,
@@ -40,7 +49,7 @@ export const quests: Quest[] = [
     icon: "QrCode"
   },
   {
-    id: 5,
+    id: 6,
     title: "Master the Quiz",
     description: "Test your knowledge about Solana, stablecoins, and remittances with 10 questions!",
     reward: 0.01,

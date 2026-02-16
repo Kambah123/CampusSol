@@ -56,10 +56,11 @@ export interface NFTBadge {
 export type QuestStep =
   | 'welcome'
   | 'quest1-connect'
-  | 'quest2-send'
-  | 'quest3-swap'
-  | 'quest4-pay'
-  | 'quest5-quiz'
+  | 'quest2-webacy'
+  | 'quest3-send'
+  | 'quest4-swap'
+  | 'quest5-pay'
+  | 'quest6-quiz'
   | 'completion'
   | 'leaderboard';
 

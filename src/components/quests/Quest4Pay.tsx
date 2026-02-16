@@ -6,8 +6,9 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Tabs, TabsContent, TabsList, TabsTrigger } from '@/components/ui/tabs';
-import { ArrowLeft, QrCode, Download, CheckCircle, Copy } from 'lucide-react';
+import { ArrowLeft, QrCode, Download, CheckCircle, Copy, ShieldCheck, Loader2 } from 'lucide-react';
 import { useWallet } from '@solana/wallet-adapter-react';
+import { analyzeTransactionRisk } from '@/lib/webacy';
 import { QRCodeSVG } from 'qrcode.react';
 import { toast } from 'sonner';
 import { encodeURL } from '@solana/pay';
@@ -25,6 +26,7 @@ export const Quest4Pay = ({ onComplete, onBack }: Quest4PayProps) => {
   const [message, setMessage] = useState('Thanks for the meal!');
   const [qrGenerated, setQrGenerated] = useState(false);
   const [completed, setCompleted] = useState(false);
+  const [verifying, setVerifying] = useState(false);
   const qrRef = useRef<HTMLDivElement>(null);
 
   // Generate Solana Pay URL
@@ -81,7 +83,18 @@ export const Quest4Pay = ({ onComplete, onBack }: Quest4PayProps) => {
     img.src = 'data:image/svg+xml;base64,' + btoa(svgData);
   };
 
-  const handleComplete = () => {
+  const handleComplete = async () => {
+    setVerifying(true);
+    // Webacy Risk Audit on self (or hypothetical recipient)
+    if (publicKey) {
+      const isSafe = await analyzeTransactionRisk(publicKey.toString());
+      if (!isSafe) {
+        toast.error('Recipient wallet flagged by Webacy!');
+        setVerifying(false);
+        return;
+      }
+    }
+    setVerifying(false);
     setCompleted(true);
     onComplete();
   };
@@ -248,13 +261,24 @@ export const Quest4Pay = ({ onComplete, onBack }: Quest4PayProps) => {
 
           {/* Complete Button */}
           {qrGenerated && !completed && (
-            <Button
-              onClick={handleComplete}
-              className="w-full bg-gradient-to-r from-green-600 to-emerald-600"
-            >
-              <CheckCircle className="w-4 h-4 mr-2" />
-              I&apos;ve Generated My QR Code
-            </Button>
+            <div className="space-y-2">
+              <div className="flex items-center justify-center gap-1 text-[10px] text-muted-foreground">
+                <ShieldCheck className="w-3 h-3 text-green-400" />
+                Recipient Audited by DD.xyz
+              </div>
+              <Button
+                onClick={handleComplete}
+                disabled={verifying}
+                className="w-full bg-gradient-to-r from-green-600 to-emerald-600"
+              >
+                {verifying ? (
+                  <Loader2 className="w-4 h-4 mr-2 animate-spin" />
+                ) : (
+                  <CheckCircle className="w-4 h-4 mr-2" />
+                )}
+                I&apos;ve Generated My QR Code
+              </Button>
+            </div>
           )}
 
           {/* Success */}
