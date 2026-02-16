@@ -3,6 +3,7 @@
 import { useWallet } from '@solana/wallet-adapter-react';
 import { WalletMultiButton } from '@solana/wallet-adapter-react-ui';
 import { useState } from 'react';
+import { motion, AnimatePresence } from 'framer-motion';
 import {
   Wallet,
   Copy,
@@ -98,10 +99,15 @@ export const ProfilePage = () => {
   };
 
   return (
-    <div className="animate-slide-up">
+    <div className="animate-slide-up min-h-screen bg-[#0F0F1E]">
       {/* User Card */}
-      <section className="px-4 pt-6 pb-4">
-        <div className="glass-card p-6 text-center">
+      <section className="px-4 pt-8 pb-4">
+        <motion.div
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          className="glass-card p-8 text-center relative overflow-hidden"
+        >
+          <div className="absolute top-0 right-0 w-32 h-32 bg-purple-500/5 rounded-full -mr-16 -mt-16" />
           {/* Avatar */}
           <div className="relative inline-block mb-4">
             <div className="w-24 h-24 rounded-full p-[3px] bg-gradient-to-br from-[#A855F7] to-[#10B981]">
@@ -151,42 +157,62 @@ export const ProfilePage = () => {
           {connected ? (
             <button
               onClick={disconnect}
-              className="btn-secondary w-full"
+              className="btn-secondary w-full h-12"
             >
               <LogOut className="w-4 h-4" />
               Disconnect
             </button>
           ) : (
-            <WalletMultiButton className="w-full" />
+            <div className="wallet-btn-wrapper">
+              <WalletMultiButton className="w-full" />
+            </div>
           )}
-        </div>
+        </motion.div>
       </section>
 
       {/* Statistics Grid */}
-      <section className="px-4 mb-6">
-        <h2 className="text-lg font-semibold text-white mb-4">Statistics</h2>
+      <section className="px-4 mb-8">
+        <h2 className="text-lg font-semibold text-white mb-4 flex items-center gap-2">
+          <Sparkles className="w-5 h-5 text-purple-400" />
+          Statistics
+        </h2>
         <div className="grid grid-cols-3 gap-3">
-          <div className="glass-card p-4 text-center">
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 0.1 }}
+            className="glass-card p-4 text-center group"
+          >
             <div className="w-10 h-10 rounded-xl bg-green-500/20 flex items-center justify-center mx-auto mb-2">
               <Wallet className="w-5 h-5 text-[#10B981]" />
             </div>
             <p className="text-xl font-bold text-white">{totalRewards.toFixed(3)}</p>
             <p className="text-[#10B981] text-xs">{formatNaira(nairaValue)}</p>
-          </div>
-          <div className="glass-card p-4 text-center">
+          </motion.div>
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 0.2 }}
+            className="glass-card p-4 text-center group"
+          >
             <div className="w-10 h-10 rounded-xl bg-purple-500/20 flex items-center justify-center mx-auto mb-2">
               <Target className="w-5 h-5 text-[#A855F7]" />
             </div>
             <p className="text-xl font-bold text-white">{completedQuestsCount}</p>
             <p className="text-[#64748B] text-xs">Quests Done</p>
-          </div>
-          <div className="glass-card p-4 text-center">
+          </motion.div>
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 0.3 }}
+            className="glass-card p-4 text-center group"
+          >
             <div className="w-10 h-10 rounded-xl bg-yellow-500/20 flex items-center justify-center mx-auto mb-2">
               <Award className="w-5 h-5 text-yellow-400" />
             </div>
             <p className="text-xl font-bold text-white">{minted ? 1 : 0}</p>
             <p className="text-[#64748B] text-xs">Badges</p>
-          </div>
+          </motion.div>
         </div>
       </section>
 
@@ -266,9 +292,20 @@ export const ProfilePage = () => {
       </section>
 
       {/* Share Badge Modal */}
-      {showShare && (
-        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
-          <div className="w-full max-w-md">
+      <AnimatePresence>
+        {showShare && (
+          <motion.div
+            initial={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+            exit={{ opacity: 0 }}
+            className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm"
+          >
+            <motion.div
+              initial={{ scale: 0.9, opacity: 0 }}
+              animate={{ scale: 1, opacity: 1 }}
+              exit={{ scale: 0.9, opacity: 0 }}
+              className="w-full max-w-md text-center"
+            >
             <ShareBadge
               userName={progress?.firstName || 'Pioneer'}
               university={USER_UNIVERSITY}
@@ -276,15 +313,16 @@ export const ProfilePage = () => {
               solEarned={totalRewards}
               questCount={completedQuestsCount}
             />
-            <button
-              onClick={() => setShowShare(false)}
-              className="btn-secondary w-full mt-4"
-            >
-              Close
-            </button>
-          </div>
-        </div>
-      )}
+              <button
+                onClick={() => setShowShare(false)}
+                className="btn-secondary w-full mt-6 h-12"
+              >
+                Close
+              </button>
+            </motion.div>
+          </motion.div>
+        )}
+      </AnimatePresence>
 
       {/* Quest Progress */}
       <section className="px-4 mb-6">
