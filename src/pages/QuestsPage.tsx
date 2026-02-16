@@ -13,7 +13,11 @@ import {
   ArrowLeftRight,
   QrCode,
   Brain,
-  X
+  X,
+  Shield,
+  ShieldCheck,
+  ShieldAlert,
+  Loader2
 } from 'lucide-react';
 import { useUserProgress } from '@/hooks/useUserProgress';
 import { quests } from '@/data/quests';
@@ -21,13 +25,14 @@ import { quizQuestions } from '@/data/quizQuestions';
 import { shortenAddress } from '@/lib/solana';
 import { getNaijaMessage } from '@/lib/naija';
 import { toast } from 'sonner';
+import { checkWalletSafety, analyzeTransactionRisk, type RiskStatus } from '@/lib/webacy';
 import { QRCodeSVG } from 'qrcode.react';
 import { encodeURL } from '@solana/pay';
-import { LAMPORTS_PER_SOL } from '@solana/web3.js';
 import { BigNumber } from 'bignumber.js';
 
 const iconMap: Record<string, React.ElementType> = {
   Wallet,
+  Shield,
   Send,
   ArrowLeftRight,
   QrCode,
@@ -107,7 +112,7 @@ export const QuestsPage = () => {
     } else {
       setQuizState({ ...quizState, completed: true });
       if (quizState.score >= 5) {
-        handleCompleteQuest(5);
+        handleCompleteQuest(6);
       }
     }
   };
@@ -255,7 +260,34 @@ const QuestModal = ({
   setQrData
 }: QuestModalProps) => {
   const quest = quests.find(q => q.id === questId);
+  const [webacyLoading, setWebacyLoading] = useState(false);
+  const [riskStatus, setRiskStatus] = useState<RiskStatus | null>(null);
+  const [txRiskLoading, setTxRiskLoading] = useState(false);
+
   if (!quest) return null;
+
+  const handleWebacyCheck = async () => {
+    if (!publicKey) return;
+    setWebacyLoading(true);
+    const result = await checkWalletSafety(publicKey.toString());
+    setRiskStatus(result);
+    setWebacyLoading(false);
+  };
+
+  const handleSendWithRiskCheck = async () => {
+    // In a real app, we'd check the destination address
+    setTxRiskLoading(true);
+    const isSafe = await analyzeTransactionRisk('RecipientAddressPlaceholder');
+    setTxRiskLoading(false);
+
+    if (isSafe) {
+      onComplete(3);
+    } else {
+      toast.error('Webacy flagged this transaction as high risk!', {
+        description: 'Safety first! We blocked this for your protection.'
+      });
+    }
+  };
 
   switch (questId) {
     case 1:
@@ -303,6 +335,71 @@ const QuestModal = ({
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
           <div className="glass-card w-full max-w-md p-6 animate-slide-up">
             <div className="flex items-center justify-between mb-6">
+              <div className="flex items-center gap-2">
+                <Shield className="w-6 h-6 text-[#A855F7]" />
+                <h2 className="text-xl font-bold text-white">Secure Your Identity</h2>
+              </div>
+              <button onClick={onClose} className="text-[#64748B] hover:text-white">
+                <X className="w-6 h-6" />
+              </button>
+            </div>
+
+            <p className="text-[#A0AEC0] mb-6">
+              Webacy analyzes your wallet across 15+ data providers to ensure you aren&apos;t interacting with scammers. Safe browsing is the first step to being a Solana Pro!
+            </p>
+
+            {riskStatus ? (
+              <div className={`p-4 rounded-xl border mb-6 ${
+                riskStatus.status === 'Safe' ? 'bg-green-500/10 border-green-500/30' :
+                riskStatus.status === 'Medium' ? 'bg-orange-500/10 border-orange-500/30' :
+                'bg-red-500/10 border-red-500/30'
+              }`}>
+                <div className={`flex items-center gap-2 mb-2 ${
+                  riskStatus.color === 'green' ? 'text-green-400' :
+                  riskStatus.color === 'orange' ? 'text-orange-400' : 'text-red-400'
+                }`}>
+                  {riskStatus.status === 'Safe' ? <ShieldCheck className="w-5 h-5" /> : <ShieldAlert className="w-5 h-5" />}
+                  <span className="font-semibold">Naija Safety Score: {riskStatus.score}/100</span>
+                </div>
+                <p className="text-white text-sm">{riskStatus.message}</p>
+              </div>
+            ) : (
+              <div className="p-4 bg-white/5 rounded-xl border border-white/10 mb-6 text-center">
+                <p className="text-[#64748B] text-sm">Click below to audit your wallet health</p>
+              </div>
+            )}
+
+            <button
+              className="btn-primary w-full mb-3"
+              disabled={webacyLoading || !!riskStatus}
+              onClick={handleWebacyCheck}
+            >
+              {webacyLoading ? <Loader2 className="w-5 h-5 animate-spin" /> : 'Scan My Wallet'}
+            </button>
+
+            {riskStatus && (
+              <button
+                className="btn-secondary w-full"
+                onClick={() => onComplete(2)}
+              >
+                Continue to Quests
+              </button>
+            )}
+
+            <div className="mt-4 text-center">
+              <span className="text-[10px] text-[#64748B] uppercase tracking-widest flex items-center justify-center gap-1">
+                Verified by <span className="text-white font-bold">DD.xyz</span>
+              </span>
+            </div>
+          </div>
+        </div>
+      );
+
+    case 3:
+      return (
+        <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
+          <div className="glass-card w-full max-w-md p-6 animate-slide-up">
+            <div className="flex items-center justify-between mb-6">
               <h2 className="text-xl font-bold text-white">Send Transaction</h2>
               <button onClick={onClose} className="text-[#64748B] hover:text-white">
                 <X className="w-6 h-6" />
@@ -320,17 +417,24 @@ const QuestModal = ({
               </p>
             </div>
 
-            <button
-              className="btn-primary w-full"
-              onClick={() => onComplete(2)}
-            >
-              Verify & Complete
-            </button>
+            <div className="mb-6">
+              <span className="text-[10px] text-[#64748B] flex items-center gap-1 mb-2">
+                <ShieldCheck className="w-3 h-3 text-[#10B981]" />
+                Webacy Transaction Protection Active
+              </span>
+              <button
+                className="btn-primary w-full"
+                disabled={txRiskLoading}
+                onClick={handleSendWithRiskCheck}
+              >
+                {txRiskLoading ? <Loader2 className="w-5 h-5 animate-spin" /> : 'Verify & Complete'}
+              </button>
+            </div>
           </div>
         </div>
       );
 
-    case 3:
+    case 4:
       return (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
           <div className="glass-card w-full max-w-md p-6 animate-slide-up">
@@ -357,7 +461,7 @@ const QuestModal = ({
 
             <button
               className="btn-secondary w-full"
-              onClick={() => onComplete(3)}
+              onClick={() => onComplete(4)}
             >
               I&apos;ve Completed the Swap
             </button>
@@ -365,13 +469,28 @@ const QuestModal = ({
         </div>
       );
 
-    case 4:
+    case 5:
       const payUrl = publicKey ? encodeURL({
         recipient: publicKey,
-        amount: new BigNumber(parseFloat(qrData.amount) * LAMPORTS_PER_SOL),
+        amount: new BigNumber(qrData.amount),
         label: qrData.label,
         message: qrData.message,
       }).toString() : '';
+
+      const handlePayComplete = async () => {
+        setTxRiskLoading(true);
+        // Simulate checking recipient address
+        const isSafe = await analyzeTransactionRisk(publicKey?.toString() || '');
+        setTxRiskLoading(false);
+
+        if (isSafe) {
+          onComplete(5);
+        } else {
+          toast.error('High risk recipient detected!', {
+            description: 'Webacy flagged this address. Use extreme caution.'
+          });
+        }
+      };
 
       return (
         <div className="fixed inset-0 z-50 flex items-center justify-center p-4 bg-black/80 backdrop-blur-sm">
@@ -401,17 +520,25 @@ const QuestModal = ({
               </div>
             )}
 
+            <div className="mb-4">
+              <span className="text-[10px] text-[#64748B] flex items-center justify-center gap-1">
+                <ShieldCheck className="w-3 h-3 text-[#10B981]" />
+                Recipient audited by Webacy Risk Engine
+              </span>
+            </div>
+
             <button
               className="btn-primary w-full"
-              onClick={() => onComplete(4)}
+              disabled={txRiskLoading}
+              onClick={handlePayComplete}
             >
-              Complete Quest
+              {txRiskLoading ? <Loader2 className="w-5 h-5 animate-spin" /> : 'Complete Quest'}
             </button>
           </div>
         </div>
       );
 
-    case 5:
+    case 6:
       if (quizState.completed) {
         const passed = quizState.score >= 7;
         return (

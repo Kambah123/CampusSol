@@ -6,9 +6,10 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Badge } from '@/components/ui/badge';
-import { ArrowLeft, Send, CheckCircle, ExternalLink, Copy, Loader2 } from 'lucide-react';
+import { ArrowLeft, Send, CheckCircle, ExternalLink, Copy, Loader2, ShieldCheck } from 'lucide-react';
 import { useWallet } from '@solana/wallet-adapter-react';
 import { sendSOL, verifyTransaction, getExplorerUrl, shortenAddress } from '@/lib/solana';
+import { analyzeTransactionRisk } from '@/lib/webacy';
 import { toast } from 'sonner';
 
 interface Quest2SendProps {
@@ -32,6 +33,14 @@ export const Quest2Send = ({ verificationAddress, onComplete, onBack }: Quest2Se
 
     setSending(true);
     try {
+      // Webacy Transaction Risk Check
+      const isSafe = await analyzeTransactionRisk(verificationAddress);
+      if (!isSafe) {
+        toast.error('Webacy flagged this recipient as high risk!');
+        setSending(false);
+        return;
+      }
+
       const signature = await sendSOL(
         { publicKey, sendTransaction } as any,
         verificationAddress,
@@ -134,11 +143,16 @@ export const Quest2Send = ({ verificationAddress, onComplete, onBack }: Quest2Se
 
           {/* Quick Send Button */}
           {connected && !verified && (
-            <Button
-              onClick={handleSend}
-              disabled={sending}
-              className="w-full bg-gradient-to-r from-blue-600 to-cyan-600"
-            >
+            <div className="space-y-2">
+              <div className="flex items-center justify-center gap-1 text-[10px] text-muted-foreground">
+                <ShieldCheck className="w-3 h-3 text-green-400" />
+                Protected by Webacy DD.xyz
+              </div>
+              <Button
+                onClick={handleSend}
+                disabled={sending}
+                className="w-full bg-gradient-to-r from-blue-600 to-cyan-600"
+              >
               {sending ? (
                 <>
                   <Loader2 className="w-4 h-4 mr-2 animate-spin" />
@@ -151,6 +165,7 @@ export const Quest2Send = ({ verificationAddress, onComplete, onBack }: Quest2Se
                 </>
               )}
             </Button>
+            </div>
           )}
 
           {/* Manual Verification */}

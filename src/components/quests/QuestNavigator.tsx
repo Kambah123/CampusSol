@@ -10,7 +10,8 @@ import {
   Award,
   Trophy,
   CheckCircle,
-  Lock
+  Lock,
+  Shield
 } from 'lucide-react';
 
 interface Quest {
@@ -32,6 +33,7 @@ interface QuestNavigatorProps {
 
 const iconMap: Record<string, React.ElementType> = {
   Wallet,
+  Shield,
   Send,
   ArrowLeftRight,
   QrCode,

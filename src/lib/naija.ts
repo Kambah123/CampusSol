@@ -54,6 +54,15 @@ export const naijaMessages = {
     "Payment confirmed! Transaction don land! ✅",
     "Done deal! Your transfer complete! 🚀",
   ],
+  securityCheck: [
+    "Wallet clean! You're safe to meuve! 🛡️",
+    "Security check pass! No wahala here! ✅",
+    "Webacy say you're good! Bag secure! 💎",
+  ],
+  securityRisk: [
+    "Omo! This one red o! Risky wallet! 🚩",
+    "Danger! This address fit drain you! 🛑",
+  ],
 };
 
 // Get random Naija message
@@ -99,6 +108,8 @@ export const localPhrases = {
   shareWithFriends: "Share with your guys!",
   viewOnExplorer: "Check am for Explorer",
   disconnect: "Comot wallet",
+  securityScan: "Scan my wallet",
+  safetyScore: "Naija Safety Score",
   yourProgress: "How far you don go",
   totalEarned: "Money wey you don make",
   questsCompleted: "Quests wey you finish",
